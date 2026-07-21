@@ -1,16 +1,14 @@
 import type { Metadata } from "next";
-import { Map } from "lucide-react";
 
-import { ModulePlaceholder } from "@/features/console/module-placeholder";
+import { MapPanel } from "@/features/map/map-panel";
 
-export const metadata: Metadata = { title: "Map" };
+export const metadata: Metadata = {
+  title: "Map",
+  description:
+    "Interactive GIS map of heat-wave hotspots across the monitored regions.",
+};
 
+/** Full-bleed GIS map module. Data is fetched client-side by the map component. */
 export default function MapPage() {
-  return (
-    <ModulePlaceholder
-      title="GIS Hotspot Map"
-      description="Remote-sensing-style overlays and heat-hotspot mapping across districts."
-      icon={Map}
-    />
-  );
+  return <MapPanel />;
 }
