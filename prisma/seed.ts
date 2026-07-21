@@ -25,7 +25,8 @@ import {
   type FocusState,
   type HeatAlertLevel,
 } from "../src/lib/enums";
-import { computeHeatIndex } from "../src/lib/heat-index";
+import { classifyAlertLevel } from "../src/lib/heat/alert-level";
+import { computeHeatIndex } from "../src/lib/heat/heat-index";
 import { PrismaClient } from "../src/generated/prisma/client";
 
 const prisma = new PrismaClient();
@@ -85,18 +86,6 @@ const WINDOW_START = new Date(WINDOW_END.getTime() - (DAYS - 1) * MS_PER_DAY);
 
 /** States modelled as hotter and more volatile. */
 const HOT_STATES = new Set<FocusState>(["Rajasthan", "Telangana", "Odisha"]);
-
-/**
- * Map a heat index (°C) to an IMD-style alert level, aligned with the NOAA
- * heat-index categories (Caution / Danger / Extreme Danger):
- *   NORMAL < 32 ≤ YELLOW < 40 ≤ ORANGE < 52 ≤ RED.
- */
-function heatIndexToLevel(heatIndexC: number): HeatAlertLevel {
-  if (heatIndexC >= 52) return "RED";
-  if (heatIndexC >= 40) return "ORANGE";
-  if (heatIndexC >= 32) return "YELLOW";
-  return "NORMAL";
-}
 
 /**
  * Physically plausible upper bound on relative humidity for a given air
@@ -415,7 +404,7 @@ function deriveAlerts(region: RegionSeed, readings: ReadingInput[]): AlertInput[
   let previousLevel: HeatAlertLevel = "NORMAL";
 
   smoothed.forEach((heatIndexC, index) => {
-    const level = heatIndexToLevel(heatIndexC);
+    const level = classifyAlertLevel(heatIndexC);
     if (level !== previousLevel && level !== "NORMAL") {
       alerts.push({
         level,
