@@ -96,7 +96,7 @@ export default async function RegionDetailPage({
   ];
 
   return (
-    <main className="mx-auto w-full max-w-5xl flex-1 px-5 py-8 sm:px-8">
+    <div className="mx-auto w-full max-w-5xl px-4 py-6 sm:px-6 lg:px-8">
       <Button
         asChild
         variant="ghost"
@@ -284,6 +284,6 @@ export default async function RegionDetailPage({
           </CardContent>
         </Card>
       </div>
-    </main>
+    </div>
   );
 }

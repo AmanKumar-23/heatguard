@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 /** Rendered when getRegionDetail() calls notFound() for an unknown region id. */
 export default function RegionNotFound() {
   return (
-    <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col items-center justify-center px-5 py-20 text-center">
+    <div className="mx-auto flex w-full max-w-5xl flex-col items-center justify-center px-5 py-20 text-center">
       <MapPin className="size-8 text-muted-foreground" aria-hidden />
       <h1 className="mt-3 text-lg font-semibold">Region not found</h1>
       <p className="mt-1 max-w-sm text-sm text-muted-foreground">
@@ -16,6 +16,6 @@ export default function RegionNotFound() {
       <Button asChild className="mt-4">
         <Link href="/dashboard">Back to monitoring</Link>
       </Button>
-    </main>
+    </div>
   );
 }

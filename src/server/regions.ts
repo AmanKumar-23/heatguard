@@ -48,6 +48,25 @@ export async function getRegionIdentity(
   return region;
 }
 
+/** Minimal region list for selectors (id, name, state), ordered by state then name. */
+export async function getRegionsList(): Promise<
+  { id: string; name: string; state: string }[]
+> {
+  return prisma.region.findMany({
+    orderBy: [{ state: "asc" }, { name: "asc" }],
+    select: { id: true, name: true, state: true },
+  });
+}
+
+/** The most recent telemetry timestamp across all regions (ISO string), or null. */
+export async function getLatestReadingTimestamp(): Promise<string | null> {
+  const latest = await prisma.temperatureReading.findFirst({
+    orderBy: { timestamp: "desc" },
+    select: { timestamp: true },
+  });
+  return latest ? latest.timestamp.toISOString() : null;
+}
+
 export interface VulnerabilityDTO {
   elderlyCount: number;
   outdoorWorkersCount: number;

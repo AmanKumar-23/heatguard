@@ -18,7 +18,7 @@ export default function DashboardError({
   }, [error]);
 
   return (
-    <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col items-center justify-center px-5 py-20 text-center">
+    <div className="mx-auto flex w-full max-w-6xl flex-col items-center justify-center px-5 py-20 text-center">
       <TriangleAlert className="size-8 text-destructive" aria-hidden />
       <h1 className="mt-3 text-lg font-semibold">Something went wrong</h1>
       <p className="mt-1 max-w-sm text-sm text-muted-foreground">
@@ -28,6 +28,6 @@ export default function DashboardError({
         <RotateCw className="size-4" aria-hidden />
         Try again
       </Button>
-    </main>
+    </div>
   );
 }

@@ -107,3 +107,32 @@ How to behave on **every** task in this repository:
   calculations.
 - **Never leave the build broken.** Every change must leave the project in a compiling,
   passing state.
+
+---
+
+## 8. Design System
+
+Built on **shadcn/ui + Tailwind v4** with a neutral base palette. Colour tokens are CSS
+variables in [`src/app/globals.css`](src/app/globals.css) (light `:root` + `.dark`), exposed
+to Tailwind via `@theme` and consumed as utilities (`bg-*`, `text-*`, `border-*`).
+
+**Heat scale (cool → hot).** A restrained four-step scale drives the heat-wave alert levels
+consistently across the app (badges, KPI accents, charts). Each has a light and dark value,
+tuned for readable tints and dots in both modes:
+
+| Token / utility | Alert level | Meaning |
+| --- | --- | --- |
+| `--heat-normal` / `heat-normal` | **Normal** | cool green — no action |
+| `--heat-yellow` / `heat-yellow` | **Yellow** | amber — watch |
+| `--heat-orange` / `heat-orange` | **Orange** | orange — warning |
+| `--heat-red` / `heat-red` | **Red** | hot red — emergency |
+
+Usage rules:
+- `AlertBadge` carries the level colour via a dot + tinted background + border; the **text
+  label stays in foreground ink** so contrast always passes (never colour-alone).
+- Charts use the theme's `--chart-1..5` categorical tokens (with a legend), not the heat scale.
+- Theming is class-based (`.dark`) via `next-themes`; light/dark are hand-tuned, not auto-inverted.
+
+**Reusable UI primitives** (in `src/components`): `KPICard`, `AlertBadge`, `SectionHeader`,
+`DataEmptyState`, `Skeleton` (loading), plus shadcn `Card`/`Button`. The operator console
+shell (sidebar + top bar) lives in `src/features/console`.
