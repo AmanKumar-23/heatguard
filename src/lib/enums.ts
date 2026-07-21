@@ -46,3 +46,8 @@ export type HeatAlertLevel = (typeof HEAT_ALERT_LEVELS)[number];
 export function alertLevelRank(level: HeatAlertLevel): number {
   return HEAT_ALERT_LEVELS.indexOf(level);
 }
+
+/** Narrow an arbitrary string to a HeatAlertLevel, defaulting to NORMAL. */
+export function toHeatAlertLevel(value: string): HeatAlertLevel {
+  return HEAT_ALERT_LEVELS.find((level) => level === value) ?? "NORMAL";
+}

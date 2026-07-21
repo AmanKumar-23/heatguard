@@ -28,6 +28,26 @@ export async function assertRegionExists(regionId: string): Promise<void> {
   }
 }
 
+/**
+ * Lightweight lookup of a region's identity (name + state).
+ *
+ * Used by the detail page's `generateMetadata`, which runs before the response
+ * is committed — so calling {@link NotFoundError} there yields a real 404 even
+ * when the page streams a loading skeleton. Throws if the region is missing.
+ */
+export async function getRegionIdentity(
+  regionId: string,
+): Promise<{ name: string; state: string }> {
+  const region = await prisma.region.findUnique({
+    where: { id: regionId },
+    select: { name: true, state: true },
+  });
+  if (!region) {
+    throw new NotFoundError(`Region '${regionId}' was not found.`);
+  }
+  return region;
+}
+
 export interface VulnerabilityDTO {
   elderlyCount: number;
   outdoorWorkersCount: number;
@@ -37,7 +57,7 @@ export interface VulnerabilityDTO {
   score: number;
 }
 
-export interface RegionSummary {
+export interface RegionOverview {
   id: string;
   name: string;
   state: string;
@@ -53,7 +73,7 @@ export interface RegionSummary {
 }
 
 /** List all regions with their latest reading, active alert, and current scores. */
-export async function getRegionSummaries(): Promise<RegionSummary[]> {
+export async function getRegionsOverview(): Promise<RegionOverview[]> {
   const regions = await prisma.region.findMany({
     orderBy: [{ state: "asc" }, { name: "asc" }],
     include: {
@@ -159,7 +179,7 @@ export interface RegionDetail {
  *  recovery, and a survey summary, plus current derived scores. */
 export async function getRegionDetail(
   regionId: string,
-  range: { from?: Date; to?: Date },
+  range: { from?: Date; to?: Date } = {},
 ): Promise<RegionDetail> {
   const region = await prisma.region.findUnique({
     where: { id: regionId },
