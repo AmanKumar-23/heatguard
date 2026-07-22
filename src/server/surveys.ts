@@ -43,3 +43,29 @@ export async function createSurvey(
     notes: survey.notes,
   };
 }
+
+export interface SurveyResponseRow extends CreatedSurveyDTO {
+  regionName: string;
+  regionState: string;
+}
+
+/** List all survey responses with their region, most recent first. */
+export async function getSurveys(): Promise<SurveyResponseRow[]> {
+  const rows = await prisma.surveyResponse.findMany({
+    orderBy: { submittedAt: "desc" },
+    include: { region: { select: { name: true, state: true } } },
+  });
+
+  return rows.map((survey) => ({
+    id: survey.id,
+    regionId: survey.regionId,
+    regionName: survey.region.name,
+    regionState: survey.region.state,
+    submittedAt: survey.submittedAt.toISOString(),
+    awarenessLevel: survey.awarenessLevel,
+    hasHeatPlan: survey.hasHeatPlan,
+    accessToShade: survey.accessToShade,
+    accessToDrinkingWater: survey.accessToDrinkingWater,
+    notes: survey.notes,
+  }));
+}

@@ -1,6 +1,8 @@
 import type { ApiFailureBody, ApiSuccessBody } from "@/lib/api/http";
+import type { CreateSurveyInput } from "@/lib/api/schemas";
 import type { AlertWithRegionDTO } from "@/server/alerts";
 import type { RegionDetail, RegionOverview } from "@/server/regions";
+import type { CreatedSurveyDTO } from "@/server/surveys";
 
 /**
  * Typed client for the HeatGuard API, for **client-side / interactive** use.
@@ -107,4 +109,9 @@ export function acknowledgeAlert(id: string): Promise<AlertWithRegionDTO> {
     "PATCH",
     { active: false },
   );
+}
+
+/** Submit a field-survey response. */
+export function submitSurvey(input: CreateSurveyInput): Promise<CreatedSurveyDTO> {
+  return sendJson<CreatedSurveyDTO>("/api/surveys", "POST", input);
 }
