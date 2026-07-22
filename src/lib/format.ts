@@ -39,6 +39,13 @@ export function formatDateUTC(iso: string): string {
   return `${pad2(date.getUTCDate())} ${MONTHS[date.getUTCMonth()]} ${date.getUTCFullYear()}`;
 }
 
+/** Format an ISO timestamp as a short day + month, e.g. `2 May` (UTC). */
+export function formatDayMonth(iso: string): string {
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) return "—";
+  return `${date.getUTCDate()} ${MONTHS[date.getUTCMonth()]}`;
+}
+
 /** Format an integer with thousands separators, e.g. `12,400,000`. */
 export function formatNumber(value: number): string {
   if (!Number.isFinite(value)) return "—";
