@@ -6,8 +6,10 @@ import type {
 
 import type { RegionOverview } from "@/server/regions";
 
-import { HEAT_COLORS, HEATMAP_GRADIENT } from "./heat-colors";
+import { HEAT_COLORS, HEATMAP_GRADIENT, VULNERABILITY_GRADIENT } from "./heat-colors";
 import { toRegionFeatureCollection } from "./map-data";
+
+export type MarkerColorMode = "level" | "vulnerability";
 
 export const SOURCE_ID = "regions";
 export const HEAT_LAYER = "regions-heat";
@@ -78,6 +80,14 @@ const circleColor: ExpressionSpecification = [
   HEAT_COLORS.NORMAL,
 ];
 
+// Sequential purple shading by vulnerability score (choropleth-style).
+const vulnerabilityColor: ExpressionSpecification = [
+  "interpolate",
+  ["linear"],
+  ["get", "vulnerabilityScore"],
+  ...VULNERABILITY_GRADIENT.flatMap(([stop, color]): [number, string] => [stop, color]),
+] as unknown as ExpressionSpecification;
+
 const labelField: ExpressionSpecification = ["get", "name"];
 
 /** Add the region source and the heatmap, marker, and label layers (idempotent). */
@@ -143,4 +153,14 @@ export function updateRegionData(
   if (source) {
     (source as GeoJSONSource).setData(toRegionFeatureCollection(regions));
   }
+}
+
+/** Recolour the markers by alert level or by vulnerability score (choropleth). */
+export function setMarkerColorMode(map: MapLibreMap, mode: MarkerColorMode): void {
+  if (!map.getLayer(MARKERS_LAYER)) return;
+  map.setPaintProperty(
+    MARKERS_LAYER,
+    "circle-color",
+    mode === "vulnerability" ? vulnerabilityColor : circleColor,
+  );
 }

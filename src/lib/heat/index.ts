@@ -11,7 +11,19 @@ export {
 export { ALERT_LEVEL_THRESHOLDS_C, classifyAlertLevel } from "./alert-level";
 export {
   computeVulnerabilityScore,
+  computeVulnerabilityBreakdown,
+  vulnerabilityBand,
+  VULNERABILITY_WEIGHTS,
   type VulnerabilityRegionInput,
   type VulnerablePopulationInput,
+  type VulnerabilityBand,
+  type VulnerabilityBreakdown,
+  type VulnerabilityFactor,
 } from "./vulnerability";
 export { computeHealthRiskScore } from "./health-risk";
+export {
+  rankAtRisk,
+  HIGH_VULNERABILITY_THRESHOLD,
+  type AtRiskInput,
+  type AtRiskRegion,
+} from "./at-risk";

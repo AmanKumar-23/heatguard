@@ -10,6 +10,7 @@ export interface RegionFeatureProps {
   maxTempC: number;
   heatIndexC: number;
   level: HeatAlertLevel;
+  vulnerabilityScore: number;
 }
 
 /** Convert regions to a GeoJSON FeatureCollection for the MapLibre source. */
@@ -31,6 +32,7 @@ export function toRegionFeatureCollection(
           maxTempC: r.latestReading?.maxTempC ?? 0,
           heatIndexC: r.latestReading?.heatIndexC ?? 0,
           level: r.currentLevel,
+          vulnerabilityScore: r.vulnerabilityScore ?? 0,
         },
       })),
   };

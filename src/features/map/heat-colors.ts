@@ -23,6 +23,14 @@ export const HEATMAP_GRADIENT: Array<[number, string]> = [
   [1, "#d7191c"],
 ];
 
+/** Sequential single-hue (purple) ramp for the vulnerability choropleth (0→100). */
+export const VULNERABILITY_GRADIENT: Array<[number, string]> = [
+  [0, "#e9e2f5"],
+  [40, "#b8a6dc"],
+  [70, "#7c5cbf"],
+  [100, "#4b2e8f"],
+];
+
 const { YELLOW, ORANGE, RED } = ALERT_LEVEL_THRESHOLDS_C;
 
 /** Legend rows mapping colour → heat-index range → alert level (cool → hot). */

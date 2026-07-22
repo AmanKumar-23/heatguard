@@ -19,6 +19,7 @@ import { MapControls } from "./map-controls";
 import { MapLegend } from "./map-legend";
 import {
   addRegionLayers,
+  setMarkerColorMode,
   updateRegionData,
   HEAT_LAYER,
   LABELS_LAYER,
@@ -52,6 +53,7 @@ export function HeatMap() {
   const [showMarkers, setShowMarkers] = useState(true);
   const [showHeatmap, setShowHeatmap] = useState(true);
   const [alertOnly, setAlertOnly] = useState(false);
+  const [vulnerabilityShading, setVulnerabilityShading] = useState(false);
 
   // Fetch regions. `status` starts as "loading"; the retry button re-sets it,
   // so this only sets state asynchronously (after the request resolves).
@@ -146,6 +148,13 @@ export function HeatMap() {
     }
   }, [showHeatmap]);
 
+  // Marker colour mode: alert level vs vulnerability choropleth.
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !loadedRef.current) return;
+    setMarkerColorMode(map, vulnerabilityShading ? "vulnerability" : "level");
+  }, [vulnerabilityShading]);
+
   // Alert-only filter (Orange/Red).
   useEffect(() => {
     const map = mapRef.current;
@@ -172,12 +181,13 @@ export function HeatMap() {
               { id: "markers", label: "Markers", checked: showMarkers, onChange: setShowMarkers },
               { id: "heatmap", label: "Heatmap", checked: showHeatmap, onChange: setShowHeatmap },
               { id: "alert", label: "Alert-only (Orange / Red)", checked: alertOnly, onChange: setAlertOnly },
+              { id: "vulnerability", label: "Vulnerability shading", checked: vulnerabilityShading, onChange: setVulnerabilityShading },
             ]}
           />
         </div>
 
         <div className="pointer-events-auto absolute bottom-3 left-3 z-10">
-          <MapLegend />
+          <MapLegend colorMode={vulnerabilityShading ? "vulnerability" : "level"} />
         </div>
 
         {selected ? (
