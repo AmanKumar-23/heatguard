@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
@@ -13,6 +14,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { ForecastSkeleton } from "@/features/forecast/forecast-skeleton";
+import { RegionForecastSection } from "@/features/forecast/region-forecast-section";
 import { NotFoundError } from "@/lib/api/http";
 import { toHeatAlertLevel } from "@/lib/enums";
 import { formatDateTimeUTC, formatDateUTC, formatNumber } from "@/lib/format";
@@ -166,6 +169,11 @@ export default async function RegionDetailPage({
             )}
           </CardContent>
         </Card>
+
+        {/* AI 7-day forecast (degrades gracefully if the service is offline). */}
+        <Suspense fallback={<ForecastSkeleton />}>
+          <RegionForecastSection regionId={region.id} />
+        </Suspense>
 
         <div className="grid gap-4 lg:grid-cols-2">
           {/* Vulnerability */}

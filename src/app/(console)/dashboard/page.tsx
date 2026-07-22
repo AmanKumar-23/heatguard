@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { Inbox } from "lucide-react";
 
 import { DataEmptyState } from "@/components/data-empty-state";
 import { SectionHeader } from "@/components/section-header";
+import { PredictedRiskSkeleton } from "@/features/forecast/forecast-skeleton";
+import { PredictedRiskWidget } from "@/features/forecast/predicted-risk-widget";
 import { KpiCards } from "@/features/response/components/kpi-cards";
 import { RegionsTable } from "@/features/response/components/regions-table";
 import { computeOverviewKpis } from "@/features/response/kpis";
@@ -41,6 +44,11 @@ export default async function DashboardPage() {
         <>
           <div className="mt-6">
             <KpiCards kpis={kpis} />
+          </div>
+          <div className="mt-4">
+            <Suspense fallback={<PredictedRiskSkeleton />}>
+              <PredictedRiskWidget />
+            </Suspense>
           </div>
           <section className="mt-8">
             <SectionHeader as="h2" title="Monitored regions" className="mb-3" />
