@@ -47,6 +47,7 @@ function region(
           id: `${name}-a`,
           regionId: name.toLowerCase(),
           level: currentLevel,
+          heatIndexC: heatIndexC ?? null,
           issuedAt: "2026-06-30T00:00:00.000Z",
           message: "test",
           active: true,

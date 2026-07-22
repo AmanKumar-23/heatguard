@@ -42,6 +42,7 @@ interface AlertRow {
   id: string;
   regionId: string;
   level: string;
+  heatIndexC: number | null;
   issuedAt: Date;
   message: string;
   active: boolean;
@@ -51,6 +52,7 @@ export interface AlertDTO {
   id: string;
   regionId: string;
   level: string;
+  heatIndexC: number | null;
   issuedAt: string;
   message: string;
   active: boolean;
@@ -61,6 +63,7 @@ export function toAlertDTO(row: AlertRow): AlertDTO {
     id: row.id,
     regionId: row.regionId,
     level: row.level,
+    heatIndexC: row.heatIndexC,
     issuedAt: row.issuedAt.toISOString(),
     message: row.message,
     active: row.active,

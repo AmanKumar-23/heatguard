@@ -63,3 +63,21 @@ export const createSurveySchema = z.object({
 });
 
 export type CreateSurveyInput = z.infer<typeof createSurveySchema>;
+
+/** Body for `POST /alerts` (simulate an alert). */
+export const createAlertSchema = z.object({
+  regionId,
+  heatIndexC: z
+    .number()
+    .min(-30, "heatIndexC is out of range.")
+    .max(80, "heatIndexC is out of range."),
+});
+
+export type CreateAlertInput = z.infer<typeof createAlertSchema>;
+
+/** Body for `PATCH /alerts/:id` (acknowledge / reactivate). */
+export const updateAlertSchema = z.object({
+  active: z.boolean(),
+});
+
+export type UpdateAlertInput = z.infer<typeof updateAlertSchema>;

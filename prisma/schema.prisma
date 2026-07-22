@@ -57,13 +57,14 @@ model TemperatureReading {
 
 /// An IMD-style early-warning alert derived from heat-index thresholds.
 model HeatAlert {
-  id        String   @id @default(cuid())
-  regionId  String
-  level     String // HeatAlertLevel — NORMAL | YELLOW | ORANGE | RED
-  issuedAt  DateTime
-  message   String
-  active    Boolean  @default(false)
-  createdAt DateTime @default(now())
+  id         String   @id @default(cuid())
+  regionId   String
+  level      String // HeatAlertLevel — NORMAL | YELLOW | ORANGE | RED
+  heatIndexC Float? // heat index that triggered the alert
+  issuedAt   DateTime
+  message    String
+  active     Boolean  @default(false)
+  createdAt  DateTime @default(now())
 
   region Region @relation(fields: [regionId], references: [id], onDelete: Cascade)
 

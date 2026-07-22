@@ -1,4 +1,5 @@
 import type { ApiFailureBody, ApiSuccessBody } from "@/lib/api/http";
+import type { AlertWithRegionDTO } from "@/server/alerts";
 import type { RegionDetail, RegionOverview } from "@/server/regions";
 
 /**
@@ -57,4 +58,53 @@ export function fetchRegionsOverview(): Promise<RegionOverview[]> {
 /** Fetch a single region's full detail. */
 export function fetchRegionDetail(id: string): Promise<RegionDetail> {
   return getJson<RegionDetail>(`/api/regions/${encodeURIComponent(id)}`);
+}
+
+async function sendJson<T>(
+  path: string,
+  method: "POST" | "PATCH",
+  payload: unknown,
+): Promise<T> {
+  const response = await fetch(path, {
+    method,
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify(payload),
+    cache: "no-store",
+  });
+
+  let body: ApiSuccessBody<T> | ApiFailureBody | null = null;
+  try {
+    body = (await response.json()) as ApiSuccessBody<T> | ApiFailureBody;
+  } catch {
+    throw new ApiClientError(response.status, "INVALID_RESPONSE", "The server returned an invalid response.");
+  }
+
+  if (!response.ok || body.ok !== true) {
+    const error = body.ok === false ? body.error : undefined;
+    throw new ApiClientError(
+      response.status,
+      error?.code ?? "REQUEST_FAILED",
+      error?.message ?? "The request failed.",
+      error?.details,
+    );
+  }
+
+  return body.data;
+}
+
+/** Create (simulate) an alert for a region from a heat index. */
+export function createAlert(input: {
+  regionId: string;
+  heatIndexC: number;
+}): Promise<AlertWithRegionDTO> {
+  return sendJson<AlertWithRegionDTO>("/api/alerts", "POST", input);
+}
+
+/** Acknowledge (deactivate) an alert. */
+export function acknowledgeAlert(id: string): Promise<AlertWithRegionDTO> {
+  return sendJson<AlertWithRegionDTO>(
+    `/api/alerts/${encodeURIComponent(id)}`,
+    "PATCH",
+    { active: false },
+  );
 }

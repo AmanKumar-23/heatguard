@@ -25,7 +25,7 @@ import {
   type FocusState,
   type HeatAlertLevel,
 } from "../src/lib/enums";
-import { classifyAlertLevel } from "../src/lib/heat/alert-level";
+import { buildAlertMessage, classifyAlertLevel } from "../src/lib/heat/alert-level";
 import { computeHeatIndex } from "../src/lib/heat/heat-index";
 import { PrismaClient } from "../src/generated/prisma/client";
 
@@ -266,6 +266,7 @@ interface ReadingInput {
 
 interface AlertInput {
   level: HeatAlertLevel;
+  heatIndexC: number;
   issuedAt: Date;
   message: string;
   active: boolean;
@@ -370,17 +371,6 @@ function generateReadings(region: RegionSeed): ReadingInput[] {
   return readings;
 }
 
-/** Human-readable message for an alert. */
-function alertMessage(regionName: string, level: HeatAlertLevel, heatIndexC: number): string {
-  const advice: Record<HeatAlertLevel, string> = {
-    NORMAL: "Conditions are within normal limits.",
-    YELLOW: "Stay hydrated and avoid prolonged sun exposure during peak hours.",
-    ORANGE: "Limit outdoor activity; check on the elderly and outdoor workers.",
-    RED: "Extreme heat emergency — avoid all non-essential outdoor exposure.",
-  };
-  return `${level} heat alert for ${regionName}: heat index reached ${heatIndexC.toFixed(1)}°C. ${advice[level]}`;
-}
-
 /** Trailing-average window (days) used to smooth day-to-day noise for alerts. */
 const ALERT_SMOOTHING_DAYS = 3;
 
@@ -408,8 +398,9 @@ function deriveAlerts(region: RegionSeed, readings: ReadingInput[]): AlertInput[
     if (level !== previousLevel && level !== "NORMAL") {
       alerts.push({
         level,
+        heatIndexC: round1(heatIndexC),
         issuedAt: readings[index].timestamp,
-        message: alertMessage(region.name, level, heatIndexC),
+        message: buildAlertMessage(region.name, level, heatIndexC),
         active: false,
       });
     }

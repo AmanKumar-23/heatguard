@@ -31,3 +31,20 @@ export function classifyAlertLevel(heatIndexC: number): HeatAlertLevel {
   if (heatIndexC >= ALERT_LEVEL_THRESHOLDS_C.YELLOW) return "YELLOW";
   return "NORMAL";
 }
+
+/** Level-specific advice line shown in an alert message. */
+const ALERT_ADVICE: Record<HeatAlertLevel, string> = {
+  NORMAL: "Conditions are within normal limits.",
+  YELLOW: "Stay hydrated and avoid prolonged sun exposure during peak hours.",
+  ORANGE: "Limit outdoor activity; check on the elderly and outdoor workers.",
+  RED: "Extreme heat emergency — avoid all non-essential outdoor exposure.",
+};
+
+/** Build a human-readable alert message for a region, level, and heat index. */
+export function buildAlertMessage(
+  regionName: string,
+  level: HeatAlertLevel,
+  heatIndexC: number,
+): string {
+  return `${level} heat alert for ${regionName}: heat index reached ${heatIndexC.toFixed(1)}°C. ${ALERT_ADVICE[level]}`;
+}
