@@ -18,10 +18,13 @@ describe("escapeCsvField", () => {
 
 describe("toCsv", () => {
   it("builds CRLF-delimited rows with a header and a UTF-8 BOM", () => {
-    const csv = toCsv(["a", "b"], [
-      [1, "x"],
-      [2, "y,z"],
-    ]);
+    const csv = toCsv(
+      ["a", "b"],
+      [
+        [1, "x"],
+        [2, "y,z"],
+      ],
+    );
     expect(csv.charCodeAt(0)).toBe(0xfeff); // BOM
     const withoutBom = csv.slice(1);
     expect(withoutBom).toBe('a,b\r\n1,x\r\n2,"y,z"\r\n');

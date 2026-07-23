@@ -30,14 +30,18 @@ export function ChartCard({
         <figcaption className="mb-3">
           <h2 className="font-semibold">{title}</h2>
           {description ? (
-            <p className="mt-0.5 text-xs text-muted-foreground">{description}</p>
+            <p className="mt-0.5 text-xs text-muted-foreground">
+              {description}
+            </p>
           ) : null}
         </figcaption>
         {isEmpty ? (
           <DataEmptyState
             className="py-10"
             title="No data"
-            description={emptyMessage ?? "No data for the selected region and range."}
+            description={
+              emptyMessage ?? "No data for the selected region and range."
+            }
           />
         ) : (
           children

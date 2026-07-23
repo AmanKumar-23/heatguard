@@ -52,7 +52,10 @@ export function rankAtRisk(
       ? isElevated(item.predictedLevel)
       : false;
 
-    if (item.vulnerabilityScore < threshold || (!currentElevated && !predictedElevated)) {
+    if (
+      item.vulnerabilityScore < threshold ||
+      (!currentElevated && !predictedElevated)
+    ) {
       continue;
     }
 
@@ -86,7 +89,8 @@ export function rankAtRisk(
   }
 
   result.sort(
-    (a, b) => b.priority - a.priority || b.vulnerabilityScore - a.vulnerabilityScore,
+    (a, b) =>
+      b.priority - a.priority || b.vulnerabilityScore - a.vulnerabilityScore,
   );
   return result;
 }

@@ -26,7 +26,8 @@ export function toCsv(
   options: { bom?: boolean } = {},
 ): string {
   const { bom = true } = options;
-  const encodeRow = (row: CsvValue[]): string => row.map(escapeCsvField).join(",");
+  const encodeRow = (row: CsvValue[]): string =>
+    row.map(escapeCsvField).join(",");
   const content = [encodeRow(headers), ...rows.map(encodeRow)].join("\r\n");
   return `${bom ? BOM : ""}${content}\r\n`;
 }

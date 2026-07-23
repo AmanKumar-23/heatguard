@@ -3,7 +3,7 @@ __pycache__/
 .venv/
 venv/
 .pytest_cache/
-# Do not bake a persisted model: region IDs are per-seed, so the container
-# trains fresh against the shared database on startup.
+# Do not bake a persisted model: the container trains fresh against the current
+# shared database on startup, keeping predictions in sync with the seeded data.
 models/
 *.joblib

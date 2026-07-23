@@ -28,10 +28,14 @@ async function expectNoSeriousA11yViolations(
   expect(blocking, summary).toEqual([]);
 }
 
-test("console smoke: Overview → Map → Analytics → Alerts → Reports", async ({ page }) => {
+test("console smoke: Overview → Map → Analytics → Alerts → Reports", async ({
+  page,
+}) => {
   // 1. Overview (dashboard)
   await page.goto("/dashboard");
-  await expect(page.getByRole("heading", { name: "Live Monitoring" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Live Monitoring" }),
+  ).toBeVisible();
   await expect(page.getByRole("navigation", { name: "Primary" })).toBeVisible();
   await expectNoSeriousA11yViolations(page);
 
@@ -39,7 +43,9 @@ test("console smoke: Overview → Map → Analytics → Alerts → Reports", asy
   //    scan our chrome but exclude the map surface itself.
   await page.getByRole("link", { name: "Map", exact: true }).click();
   await expect(page).toHaveURL(/\/map$/);
-  await expect(page.locator(".maplibregl-canvas")).toBeAttached({ timeout: 20_000 });
+  await expect(page.locator(".maplibregl-canvas")).toBeAttached({
+    timeout: 20_000,
+  });
   await expectNoSeriousA11yViolations(page, { exclude: ".maplibregl-map" });
 
   // 3. Analytics
@@ -51,12 +57,16 @@ test("console smoke: Overview → Map → Analytics → Alerts → Reports", asy
   // 4. Alerts
   await page.getByRole("link", { name: "Alerts", exact: true }).click();
   await expect(page).toHaveURL(/\/alerts$/);
-  await expect(page.getByRole("heading", { name: "Early Warning & Alerts" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Early Warning & Alerts" }),
+  ).toBeVisible();
   await expectNoSeriousA11yViolations(page);
 
   // 5. Reports
   await page.getByRole("link", { name: "Reports", exact: true }).click();
   await expect(page).toHaveURL(/\/reports$/);
-  await expect(page.getByRole("button", { name: /Download PDF/ })).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: /Download PDF/ }),
+  ).toBeVisible();
   await expectNoSeriousA11yViolations(page);
 });

@@ -33,12 +33,19 @@ export function KPICard({
       <div className="flex items-center justify-between gap-2">
         <span className="text-sm text-muted-foreground">{label}</span>
         {Icon ? (
-          <Icon className={cn("size-4 shrink-0", TONE_ICON[tone])} aria-hidden />
+          <Icon
+            className={cn("size-4 shrink-0", TONE_ICON[tone])}
+            aria-hidden
+          />
         ) : null}
       </div>
-      <p className="mt-2 text-2xl font-bold tracking-tight tabular-nums">{value}</p>
+      <p className="mt-2 text-2xl font-bold tracking-tight tabular-nums">
+        {value}
+      </p>
       {sublabel ? (
-        <p className="mt-1 truncate text-xs text-muted-foreground">{sublabel}</p>
+        <p className="mt-1 truncate text-xs text-muted-foreground">
+          {sublabel}
+        </p>
       ) : null}
     </Card>
   );

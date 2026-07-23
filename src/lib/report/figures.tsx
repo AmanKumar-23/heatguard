@@ -55,7 +55,8 @@ export function BarChartSVG({
   const padBottom = 8;
   const valueColWidth = 56;
   const barArea = width - labelWidth - valueColWidth;
-  const height = padTop + padBottom + data.length * barHeight + (data.length - 1) * gap;
+  const height =
+    padTop + padBottom + data.length * barHeight + (data.length - 1) * gap;
   const domainMax = niceMax(Math.max(0, ...data.map((d) => d.value)));
 
   return (
@@ -66,7 +67,14 @@ export function BarChartSVG({
       style={{ width: "100%", height: "auto" }}
     >
       {/* baseline */}
-      <line x1={labelWidth} y1={padTop} x2={labelWidth} y2={height - padBottom} stroke={GRID} strokeWidth={1} />
+      <line
+        x1={labelWidth}
+        y1={padTop}
+        x2={labelWidth}
+        y2={height - padBottom}
+        stroke={GRID}
+        strokeWidth={1}
+      />
       {data.map((d, i) => {
         const y = padTop + i * (barHeight + gap);
         const w = Math.max(1, scaleLinear(d.value, domainMax, barArea));
@@ -82,7 +90,14 @@ export function BarChartSVG({
             >
               {d.label}
             </text>
-            <rect x={labelWidth} y={y} width={w} height={barHeight} rx={4} fill={d.color} />
+            <rect
+              x={labelWidth}
+              y={y}
+              width={w}
+              height={barHeight}
+              rx={4}
+              fill={d.color}
+            />
             <text
               x={labelWidth + w + 6}
               y={y + barHeight / 2}
@@ -145,7 +160,9 @@ export function RegionMapSVG({
   const maxPop = Math.max(1, ...regions.map((r) => r.population));
 
   const colorFor = (r: RegionRow): string =>
-    colorBy === "level" ? LEVEL_COLORS[r.level] : vulnerabilityColor(r.vulnerabilityScore ?? 0);
+    colorBy === "level"
+      ? LEVEL_COLORS[r.level]
+      : vulnerabilityColor(r.vulnerabilityScore ?? 0);
 
   return (
     <svg
@@ -154,22 +171,63 @@ export function RegionMapSVG({
       aria-label={ariaLabel}
       style={{ width: "100%", height: "auto" }}
     >
-      <rect x={0.5} y={0.5} width={width - 1} height={height - 1} rx={8} fill={PANEL} stroke={GRID} />
+      <rect
+        x={0.5}
+        y={0.5}
+        width={width - 1}
+        height={height - 1}
+        rx={8}
+        fill={PANEL}
+        stroke={GRID}
+      />
       {/* faint reference grid */}
       {[0.25, 0.5, 0.75].map((f) => (
-        <line key={`v${f}`} x1={width * f} y1={padding / 2} x2={width * f} y2={height - padding / 2} stroke={GRID} strokeWidth={1} />
+        <line
+          key={`v${f}`}
+          x1={width * f}
+          y1={padding / 2}
+          x2={width * f}
+          y2={height - padding / 2}
+          stroke={GRID}
+          strokeWidth={1}
+        />
       ))}
       {[0.33, 0.66].map((f) => (
-        <line key={`h${f}`} x1={padding / 2} y1={height * f} x2={width - padding / 2} y2={height * f} stroke={GRID} strokeWidth={1} />
+        <line
+          key={`h${f}`}
+          x1={padding / 2}
+          y1={height * f}
+          x2={width - padding / 2}
+          y2={height * f}
+          stroke={GRID}
+          strokeWidth={1}
+        />
       ))}
 
       {regions.map((r, i) => {
         const p = points[i];
-        const radius = Math.max(5, Math.min(18, Math.sqrt(r.population / maxPop) * 18));
+        const radius = Math.max(
+          5,
+          Math.min(18, Math.sqrt(r.population / maxPop) * 18),
+        );
         return (
           <g key={`${r.name}-${i}`}>
-            <circle cx={p.x} cy={p.y} r={radius} fill={colorFor(r)} fillOpacity={0.82} stroke="#ffffff" strokeWidth={1.5} />
-            <text x={p.x} y={p.y - radius - 3} textAnchor="middle" fontSize={9.5} fill={MUTED}>
+            <circle
+              cx={p.x}
+              cy={p.y}
+              r={radius}
+              fill={colorFor(r)}
+              fillOpacity={0.82}
+              stroke="#ffffff"
+              strokeWidth={1.5}
+            />
+            <text
+              x={p.x}
+              y={p.y - radius - 3}
+              textAnchor="middle"
+              fontSize={9.5}
+              fill={MUTED}
+            >
               {r.name}
             </text>
           </g>

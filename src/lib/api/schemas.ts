@@ -58,7 +58,11 @@ export const createSurveySchema = z.object({
   hasHeatPlan: z.boolean(),
   accessToShade: z.boolean(),
   accessToDrinkingWater: z.boolean(),
-  notes: z.string().trim().max(1000, "notes must be 1000 characters or fewer.").optional(),
+  notes: z
+    .string()
+    .trim()
+    .max(1000, "notes must be 1000 characters or fewer.")
+    .optional(),
   submittedAt: isoDate.optional(),
 });
 

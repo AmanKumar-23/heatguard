@@ -1,4 +1,8 @@
-import { HEATMAP_GRADIENT, LEGEND_ITEMS, VULNERABILITY_GRADIENT } from "./heat-colors";
+import {
+  HEATMAP_GRADIENT,
+  LEGEND_ITEMS,
+  VULNERABILITY_GRADIENT,
+} from "./heat-colors";
 import type { MarkerColorMode } from "./map-layers";
 
 function gradientCss(stops: Array<[number, string]>, max: number): string {
@@ -9,7 +13,11 @@ function gradientCss(stops: Array<[number, string]>, max: number): string {
 
 /** Legend for the map. Shows the alert-level scale or (in choropleth mode) the
  *  vulnerability scale, plus the heatmap intensity gradient. */
-export function MapLegend({ colorMode = "level" }: { colorMode?: MarkerColorMode }) {
+export function MapLegend({
+  colorMode = "level",
+}: {
+  colorMode?: MarkerColorMode;
+}) {
   return (
     <div className="w-48 rounded-lg border border-border bg-background/90 p-3 shadow-md backdrop-blur">
       {colorMode === "vulnerability" ? (

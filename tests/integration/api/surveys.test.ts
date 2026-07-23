@@ -43,7 +43,9 @@ describe("POST /api/surveys", () => {
   });
 
   it("returns 400 for an invalid body and never touches the data layer", async () => {
-    const res = await postSurvey(jsonRequest({ ...validBody, awarenessLevel: 9 }));
+    const res = await postSurvey(
+      jsonRequest({ ...validBody, awarenessLevel: 9 }),
+    );
     expect(res.status).toBe(400);
     const body = await res.json();
     expect(body.error.code).toBe("VALIDATION_ERROR");

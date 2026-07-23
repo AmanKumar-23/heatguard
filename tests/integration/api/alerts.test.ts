@@ -35,7 +35,9 @@ describe("GET /api/alerts", () => {
   it("passes the parsed active filter through and returns the feed", async () => {
     mockGet.mockResolvedValue([{ id: "a1" }] as never);
 
-    const res = await getAlerts(new NextRequest("http://localhost/api/alerts?active=true"));
+    const res = await getAlerts(
+      new NextRequest("http://localhost/api/alerts?active=true"),
+    );
     expect(res.status).toBe(200);
     const body = await res.json();
     expect(body.data).toEqual([{ id: "a1" }]);
@@ -43,7 +45,9 @@ describe("GET /api/alerts", () => {
   });
 
   it("rejects an invalid active value", async () => {
-    const res = await getAlerts(new NextRequest("http://localhost/api/alerts?active=maybe"));
+    const res = await getAlerts(
+      new NextRequest("http://localhost/api/alerts?active=maybe"),
+    );
     expect(res.status).toBe(400);
     expect(mockGet).not.toHaveBeenCalled();
   });
@@ -54,7 +58,10 @@ describe("POST /api/alerts", () => {
     mockCreate.mockResolvedValue({ id: "a1", level: "ORANGE" } as never);
 
     const res = await postAlert(
-      jsonRequest("http://localhost/api/alerts", { regionId: "r1", heatIndexC: 42 }),
+      jsonRequest("http://localhost/api/alerts", {
+        regionId: "r1",
+        heatIndexC: 42,
+      }),
     );
     expect(res.status).toBe(201);
     const body = await res.json();
@@ -63,7 +70,10 @@ describe("POST /api/alerts", () => {
 
   it("rejects an out-of-range heat index", async () => {
     const res = await postAlert(
-      jsonRequest("http://localhost/api/alerts", { regionId: "r1", heatIndexC: 999 }),
+      jsonRequest("http://localhost/api/alerts", {
+        regionId: "r1",
+        heatIndexC: 999,
+      }),
     );
     expect(res.status).toBe(400);
     expect(mockCreate).not.toHaveBeenCalled();

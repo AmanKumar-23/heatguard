@@ -29,7 +29,10 @@ describe("GET /api/regions", () => {
     const res = await getRegions();
     expect(res.status).toBe(200);
     const body = await res.json();
-    expect(body).toEqual({ ok: true, data: [{ id: "r1", name: "Test", state: "Delhi" }] });
+    expect(body).toEqual({
+      ok: true,
+      data: [{ id: "r1", name: "Test", state: "Delhi" }],
+    });
   });
 });
 
@@ -43,14 +46,21 @@ describe("GET /api/regions/:id", () => {
     expect(res.status).toBe(200);
     const body = await res.json();
     expect(body.ok).toBe(true);
-    expect(mockDetail).toHaveBeenCalledWith("r1", { from: undefined, to: undefined });
+    expect(mockDetail).toHaveBeenCalledWith("r1", {
+      from: undefined,
+      to: undefined,
+    });
   });
 
   it("maps NotFoundError to a 404 envelope", async () => {
-    mockDetail.mockRejectedValue(new NotFoundError("Region 'nope' was not found."));
+    mockDetail.mockRejectedValue(
+      new NotFoundError("Region 'nope' was not found."),
+    );
 
     const req = new NextRequest("http://localhost/api/regions/nope");
-    const res = await getRegion(req, { params: Promise.resolve({ id: "nope" }) });
+    const res = await getRegion(req, {
+      params: Promise.resolve({ id: "nope" }),
+    });
 
     expect(res.status).toBe(404);
     const body = await res.json();

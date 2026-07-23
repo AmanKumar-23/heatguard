@@ -25,7 +25,10 @@ import {
   type FocusState,
   type HeatAlertLevel,
 } from "../src/lib/enums";
-import { buildAlertMessage, classifyAlertLevel } from "../src/lib/heat/alert-level";
+import {
+  buildAlertMessage,
+  classifyAlertLevel,
+} from "../src/lib/heat/alert-level";
 import { computeHeatIndex } from "../src/lib/heat/heat-index";
 import { PrismaClient } from "../src/generated/prisma/client";
 
@@ -135,6 +138,20 @@ interface RegionSeed {
   climate: ClimateProfile;
 }
 
+/**
+ * Deterministic, URL-safe region id derived from its name + state.
+ *
+ * Using a stable slug instead of a random `cuid()` means re-seeding always
+ * produces the same ids, so trained ML models, bookmarked `/regions/:id` URLs,
+ * and any cached references stay valid across seeds.
+ */
+function regionId(name: string, state: string): string {
+  return `${name}-${state}`
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}
+
 const REGIONS: RegionSeed[] = [
   // Telangana
   {
@@ -144,7 +161,16 @@ const REGIONS: RegionSeed[] = [
     latitude: 17.385,
     longitude: 78.4867,
     population: 10_500_000,
-    climate: { baseMaxC: 39, maxTempCeilingC: 46, volatility: 3, humidityBase: 38, humiditySpread: 12, diurnalRange: 11, episodes: 3, episodePeakC: 6 },
+    climate: {
+      baseMaxC: 39,
+      maxTempCeilingC: 46,
+      volatility: 3,
+      humidityBase: 38,
+      humiditySpread: 12,
+      diurnalRange: 11,
+      episodes: 3,
+      episodePeakC: 6,
+    },
   },
   {
     name: "Ramagundam",
@@ -153,7 +179,16 @@ const REGIONS: RegionSeed[] = [
     latitude: 18.755,
     longitude: 79.474,
     population: 240_000,
-    climate: { baseMaxC: 42, maxTempCeilingC: 49, volatility: 3.2, humidityBase: 28, humiditySpread: 10, diurnalRange: 12, episodes: 3, episodePeakC: 7 },
+    climate: {
+      baseMaxC: 42,
+      maxTempCeilingC: 49,
+      volatility: 3.2,
+      humidityBase: 28,
+      humiditySpread: 10,
+      diurnalRange: 12,
+      episodes: 3,
+      episodePeakC: 7,
+    },
   },
   // Andhra Pradesh
   {
@@ -163,7 +198,16 @@ const REGIONS: RegionSeed[] = [
     latitude: 17.6868,
     longitude: 83.2185,
     population: 2_100_000,
-    climate: { baseMaxC: 35, maxTempCeilingC: 42, volatility: 2, humidityBase: 72, humiditySpread: 10, diurnalRange: 8, episodes: 2, episodePeakC: 4 },
+    climate: {
+      baseMaxC: 35,
+      maxTempCeilingC: 42,
+      volatility: 2,
+      humidityBase: 72,
+      humiditySpread: 10,
+      diurnalRange: 8,
+      episodes: 2,
+      episodePeakC: 4,
+    },
   },
   {
     name: "Kurnool",
@@ -172,7 +216,16 @@ const REGIONS: RegionSeed[] = [
     latitude: 15.8281,
     longitude: 78.0373,
     population: 460_000,
-    climate: { baseMaxC: 40, maxTempCeilingC: 47, volatility: 3, humidityBase: 30, humiditySpread: 10, diurnalRange: 12, episodes: 2, episodePeakC: 6 },
+    climate: {
+      baseMaxC: 40,
+      maxTempCeilingC: 47,
+      volatility: 3,
+      humidityBase: 30,
+      humiditySpread: 10,
+      diurnalRange: 12,
+      episodes: 2,
+      episodePeakC: 6,
+    },
   },
   // Odisha
   {
@@ -182,7 +235,16 @@ const REGIONS: RegionSeed[] = [
     latitude: 20.2961,
     longitude: 85.8245,
     population: 880_000,
-    climate: { baseMaxC: 39, maxTempCeilingC: 44, volatility: 3, humidityBase: 58, humiditySpread: 12, diurnalRange: 9, episodes: 3, episodePeakC: 5 },
+    climate: {
+      baseMaxC: 39,
+      maxTempCeilingC: 44,
+      volatility: 3,
+      humidityBase: 58,
+      humiditySpread: 12,
+      diurnalRange: 9,
+      episodes: 3,
+      episodePeakC: 5,
+    },
   },
   {
     name: "Titlagarh",
@@ -191,7 +253,16 @@ const REGIONS: RegionSeed[] = [
     latitude: 20.29,
     longitude: 83.15,
     population: 35_000,
-    climate: { baseMaxC: 43, maxTempCeilingC: 50, volatility: 3.5, humidityBase: 26, humiditySpread: 10, diurnalRange: 14, episodes: 3, episodePeakC: 7 },
+    climate: {
+      baseMaxC: 43,
+      maxTempCeilingC: 50,
+      volatility: 3.5,
+      humidityBase: 26,
+      humiditySpread: 10,
+      diurnalRange: 14,
+      episodes: 3,
+      episodePeakC: 7,
+    },
   },
   // Rajasthan
   {
@@ -201,7 +272,16 @@ const REGIONS: RegionSeed[] = [
     latitude: 26.9124,
     longitude: 75.7873,
     population: 3_100_000,
-    climate: { baseMaxC: 41, maxTempCeilingC: 48, volatility: 3.2, humidityBase: 24, humiditySpread: 10, diurnalRange: 13, episodes: 3, episodePeakC: 6 },
+    climate: {
+      baseMaxC: 41,
+      maxTempCeilingC: 48,
+      volatility: 3.2,
+      humidityBase: 24,
+      humiditySpread: 10,
+      diurnalRange: 13,
+      episodes: 3,
+      episodePeakC: 6,
+    },
   },
   {
     name: "Churu",
@@ -210,7 +290,16 @@ const REGIONS: RegionSeed[] = [
     latitude: 28.3,
     longitude: 74.9667,
     population: 120_000,
-    climate: { baseMaxC: 43, maxTempCeilingC: 51, volatility: 3.8, humidityBase: 18, humiditySpread: 8, diurnalRange: 15, episodes: 3, episodePeakC: 8 },
+    climate: {
+      baseMaxC: 43,
+      maxTempCeilingC: 51,
+      volatility: 3.8,
+      humidityBase: 18,
+      humiditySpread: 8,
+      diurnalRange: 15,
+      episodes: 3,
+      episodePeakC: 8,
+    },
   },
   // Maharashtra
   {
@@ -220,7 +309,16 @@ const REGIONS: RegionSeed[] = [
     latitude: 19.076,
     longitude: 72.8777,
     population: 12_400_000,
-    climate: { baseMaxC: 34, maxTempCeilingC: 41, volatility: 1.8, humidityBase: 74, humiditySpread: 8, diurnalRange: 7, episodes: 2, episodePeakC: 4 },
+    climate: {
+      baseMaxC: 34,
+      maxTempCeilingC: 41,
+      volatility: 1.8,
+      humidityBase: 74,
+      humiditySpread: 8,
+      diurnalRange: 7,
+      episodes: 2,
+      episodePeakC: 4,
+    },
   },
   {
     name: "Nagpur",
@@ -229,7 +327,16 @@ const REGIONS: RegionSeed[] = [
     latitude: 21.1458,
     longitude: 79.0882,
     population: 2_450_000,
-    climate: { baseMaxC: 42, maxTempCeilingC: 49, volatility: 3.2, humidityBase: 28, humiditySpread: 10, diurnalRange: 12, episodes: 3, episodePeakC: 7 },
+    climate: {
+      baseMaxC: 42,
+      maxTempCeilingC: 49,
+      volatility: 3.2,
+      humidityBase: 28,
+      humiditySpread: 10,
+      diurnalRange: 12,
+      episodes: 3,
+      episodePeakC: 7,
+    },
   },
   // Delhi
   {
@@ -239,7 +346,16 @@ const REGIONS: RegionSeed[] = [
     latitude: 28.6139,
     longitude: 77.209,
     population: 3_200_000,
-    climate: { baseMaxC: 40, maxTempCeilingC: 48, volatility: 3.2, humidityBase: 32, humiditySpread: 12, diurnalRange: 12, episodes: 3, episodePeakC: 6 },
+    climate: {
+      baseMaxC: 40,
+      maxTempCeilingC: 48,
+      volatility: 3.2,
+      humidityBase: 32,
+      humiditySpread: 12,
+      diurnalRange: 12,
+      episodes: 3,
+      episodePeakC: 6,
+    },
   },
   {
     name: "Narela",
@@ -248,7 +364,16 @@ const REGIONS: RegionSeed[] = [
     latitude: 28.853,
     longitude: 77.091,
     population: 220_000,
-    climate: { baseMaxC: 41, maxTempCeilingC: 49, volatility: 3.4, humidityBase: 30, humiditySpread: 12, diurnalRange: 13, episodes: 3, episodePeakC: 6 },
+    climate: {
+      baseMaxC: 41,
+      maxTempCeilingC: 49,
+      volatility: 3.4,
+      humidityBase: 30,
+      humiditySpread: 12,
+      diurnalRange: 13,
+      episodes: 3,
+      episodePeakC: 6,
+    },
   },
 ];
 
@@ -334,13 +459,20 @@ function generateReadings(region: RegionSeed): ReadingInput[] {
     for (const ep of episodes) {
       if (d >= ep.start && d < ep.start + ep.length) {
         const phase = ep.length > 1 ? (d - ep.start) / (ep.length - 1) : 0.5;
-        episodeBoost = Math.max(episodeBoost, ep.peakC * Math.sin(Math.PI * phase));
+        episodeBoost = Math.max(
+          episodeBoost,
+          ep.peakC * Math.sin(Math.PI * phase),
+        );
       }
     }
 
     const noise = uniform(-c.volatility, c.volatility);
     const maxTempC = round1(
-      clamp(c.baseMaxC + seasonal + episodeBoost + noise, 26, c.maxTempCeilingC),
+      clamp(
+        c.baseMaxC + seasonal + episodeBoost + noise,
+        26,
+        c.maxTempCeilingC,
+      ),
     );
 
     // Humidity is bounded by what is physically possible at this temperature,
@@ -382,12 +514,17 @@ const ALERT_SMOOTHING_DAYS = 3;
  * de-escalations alike. Only the most recent bulletin, reflecting the current
  * standing level, is marked active.
  */
-function deriveAlerts(region: RegionSeed, readings: ReadingInput[]): AlertInput[] {
+function deriveAlerts(
+  region: RegionSeed,
+  readings: ReadingInput[],
+): AlertInput[] {
   const smoothed: number[] = [];
   for (let index = 0; index < readings.length; index++) {
     const start = Math.max(0, index - (ALERT_SMOOTHING_DAYS - 1));
     const slice = readings.slice(start, index + 1);
-    smoothed.push(slice.reduce((sum, r) => sum + r.heatIndexC, 0) / slice.length);
+    smoothed.push(
+      slice.reduce((sum, r) => sum + r.heatIndexC, 0) / slice.length,
+    );
   }
 
   const alerts: AlertInput[] = [];
@@ -447,10 +584,15 @@ function generateVulnerability(region: RegionSeed): VulnerabilityInput {
 }
 
 /** Weekly recovery indicators, scaled to that week's heat severity. */
-function generateRecovery(region: RegionSeed, readings: ReadingInput[]): RecoveryInput[] {
+function generateRecovery(
+  region: RegionSeed,
+  readings: ReadingInput[],
+): RecoveryInput[] {
   const isArid = region.climate.humidityBase < 30;
-  const isAgrarian = region.districtType === "Rural" || region.districtType === "Industrial";
-  const isUrban = region.districtType === "Urban" || region.districtType === "Municipal";
+  const isAgrarian =
+    region.districtType === "Rural" || region.districtType === "Industrial";
+  const isUrban =
+    region.districtType === "Urban" || region.districtType === "Municipal";
   const popFactor = region.population / 100_000;
 
   const indicators: RecoveryInput[] = [];
@@ -458,18 +600,32 @@ function generateRecovery(region: RegionSeed, readings: ReadingInput[]): Recover
     const slice = readings.slice(w * 7, w * 7 + 7);
     if (slice.length === 0) continue;
 
-    const avgHeatIndex = slice.reduce((sum, r) => sum + r.heatIndexC, 0) / slice.length;
+    const avgHeatIndex =
+      slice.reduce((sum, r) => sum + r.heatIndexC, 0) / slice.length;
     // 0 at 32°C (onset) → 1 at 50°C (extreme).
     const severity = clamp((avgHeatIndex - 32) / 18, 0, 1);
 
     indicators.push({
       date: slice[slice.length - 1].timestamp,
-      hospitalAdmissions: Math.max(0, Math.round(popFactor * (0.5 + severity * 5) * uniform(0.7, 1.3))),
-      workdaysLost: Math.max(0, Math.round(popFactor * (10 + severity * 180) * uniform(0.7, 1.3))),
-      cropLossPct: Math.max(0, round1(severity * (isAgrarian ? 28 : 10) * uniform(0.6, 1.1))),
+      hospitalAdmissions: Math.max(
+        0,
+        Math.round(popFactor * (0.5 + severity * 5) * uniform(0.7, 1.3)),
+      ),
+      workdaysLost: Math.max(
+        0,
+        Math.round(popFactor * (10 + severity * 180) * uniform(0.7, 1.3)),
+      ),
+      cropLossPct: Math.max(
+        0,
+        round1(severity * (isAgrarian ? 28 : 10) * uniform(0.6, 1.1)),
+      ),
       electricityFailures: Math.max(
         0,
-        Math.round((isUrban ? popFactor * 0.15 : popFactor * 0.06) * (1 + severity * 5) * uniform(0.6, 1.3)),
+        Math.round(
+          (isUrban ? popFactor * 0.15 : popFactor * 0.06) *
+            (1 + severity * 5) *
+            uniform(0.6, 1.3),
+        ),
       ),
       waterScarcityIndex: round1(
         clamp((isArid ? 45 : 22) + severity * 40 * uniform(0.7, 1.2), 0, 100),
@@ -492,12 +648,15 @@ const SURVEY_NOTES = [
 
 /** A handful of community survey responses for a region. */
 function generateSurveys(region: RegionSeed): SurveyInput[] {
-  const isUrban = region.districtType === "Urban" || region.districtType === "Municipal";
+  const isUrban =
+    region.districtType === "Urban" || region.districtType === "Municipal";
   const count = integer(3, 6);
 
   const surveys: SurveyInput[] = [];
   for (let i = 0; i < count; i++) {
-    const submittedAt = new Date(WINDOW_START.getTime() + integer(0, DAYS - 1) * MS_PER_DAY);
+    const submittedAt = new Date(
+      WINDOW_START.getTime() + integer(0, DAYS - 1) * MS_PER_DAY,
+    );
     surveys.push({
       submittedAt,
       awarenessLevel: isUrban ? integer(3, 5) : integer(2, 4),
@@ -537,6 +696,7 @@ async function main(): Promise<void> {
 
     await prisma.region.create({
       data: {
+        id: regionId(region.name, region.state),
         name: region.name,
         state: region.state,
         districtType: region.districtType,

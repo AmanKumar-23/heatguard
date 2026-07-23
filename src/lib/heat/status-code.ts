@@ -57,7 +57,9 @@ export function computeStatusCode(signals: RegionSignal[]): StatusCodeResult {
 
   for (const signal of signals) {
     const level =
-      signal.heatIndexC === null ? "NORMAL" : classifyAlertLevel(signal.heatIndexC);
+      signal.heatIndexC === null
+        ? "NORMAL"
+        : classifyAlertLevel(signal.heatIndexC);
     const severity = HEAT_SEVERITY[level];
     if (severity > heat) heat = severity;
     if (level === "RED") redCount += 1;
@@ -68,7 +70,10 @@ export function computeStatusCode(signals: RegionSignal[]): StatusCodeResult {
     ) {
       elevatedVulnerabilities.push(signal.vulnerabilityScore);
     }
-    if (signal.waterScarcityIndex !== null && signal.waterScarcityIndex > maxWater) {
+    if (
+      signal.waterScarcityIndex !== null &&
+      signal.waterScarcityIndex > maxWater
+    ) {
       maxWater = signal.waterScarcityIndex;
     }
   }
@@ -113,7 +118,9 @@ export function computeStatusCode(signals: RegionSignal[]): StatusCodeResult {
       state: STATUS_STATE[feed],
       meaning: "Regions with missing or stale telemetry.",
       detail:
-        staleCount === 0 ? "All feeds current." : `${staleCount} region feed(s) stale.`,
+        staleCount === 0
+          ? "All feeds current."
+          : `${staleCount} region feed(s) stale.`,
     },
     {
       key: "vulnerability",

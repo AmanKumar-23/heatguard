@@ -62,10 +62,10 @@ The Next.js app expects the service at `http://localhost:8000` (configurable via
 
 ## Endpoints
 
-| Endpoint | Description |
-| --- | --- |
-| `GET /health` | Service status, number of region models, and train time. |
+| Endpoint                         | Description                                                                                                        |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `GET /health`                    | Service status, number of region models, and train time.                                                           |
 | `GET /predict/{regionId}?days=7` | 7-day forecast: `[{ date, predictedMaxTempC, predictedHeatIndexC, predictedLevel, healthRisk, healthRiskScore }]`. |
-| `GET /predict/summary?days=7` | Regions ranked by predicted peak heat index. |
+| `GET /predict/summary?days=7`    | Regions ranked by predicted peak heat index.                                                                       |
 
 `days` is clamped to 1–14. Unknown region → `404`.

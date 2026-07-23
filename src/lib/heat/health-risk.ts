@@ -40,7 +40,9 @@ export function computeHealthRiskScore(
   heatIndexC: number,
   vulnerabilityScore: number,
 ): number {
-  const hazard = clamp01((heatIndexC - HAZARD_MIN_C) / (HAZARD_MAX_C - HAZARD_MIN_C));
+  const hazard = clamp01(
+    (heatIndexC - HAZARD_MIN_C) / (HAZARD_MAX_C - HAZARD_MIN_C),
+  );
   const vulnerability = clamp01(vulnerabilityScore / 100);
 
   const risk = hazard * (0.5 + 0.5 * vulnerability);

@@ -18,14 +18,27 @@ const SEVERITY_BG = [
 
 const EXAMPLES: Array<{ code: string; meaning: string }> = [
   { code: "0000", meaning: "All systems normal." },
-  { code: "2000", meaning: "Heat warning (a region at Orange); everything else normal." },
+  {
+    code: "2000",
+    meaning: "Heat warning (a region at Orange); everything else normal.",
+  },
   { code: "3000", meaning: "Heat critical (a region at Red)." },
-  { code: "3130", meaning: "Heat critical, one stale feed, high vulnerability under alert." },
-  { code: "3033", meaning: "Heat critical, high vulnerability, and lagging recovery." },
+  {
+    code: "3130",
+    meaning: "Heat critical, one stale feed, high vulnerability under alert.",
+  },
+  {
+    code: "3033",
+    meaning: "Heat critical, high vulnerability, and lagging recovery.",
+  },
 ];
 
 /** Documented 4-digit system health code with a per-digit breakdown. */
-export function StatusCodePanel({ statusCode }: { statusCode: StatusCodeResult }) {
+export function StatusCodePanel({
+  statusCode,
+}: {
+  statusCode: StatusCodeResult;
+}) {
   return (
     <Card className="p-5">
       <div className="flex flex-wrap items-start justify-between gap-3">
@@ -46,7 +59,9 @@ export function StatusCodePanel({ statusCode }: { statusCode: StatusCodeResult }
               </span>
             ))}
           </div>
-          <p className="text-xs text-muted-foreground">Overall: {statusCode.overall}</p>
+          <p className="text-xs text-muted-foreground">
+            Overall: {statusCode.overall}
+          </p>
         </div>
       </div>
 
@@ -72,7 +87,9 @@ export function StatusCodePanel({ statusCode }: { statusCode: StatusCodeResult }
                 {index + 1}. {digit.label}{" "}
                 {/* De-emphasised via dark ink at reduced opacity (not
                     muted-foreground) so it stays legible on the colour tints. */}
-                <span className="text-xs font-normal text-foreground/80">· {digit.state}</span>
+                <span className="text-xs font-normal text-foreground/80">
+                  · {digit.state}
+                </span>
               </p>
               <p className="text-xs text-foreground/80">{digit.meaning}</p>
               <p className="mt-0.5 text-xs">{digit.detail}</p>
@@ -82,11 +99,18 @@ export function StatusCodePanel({ statusCode }: { statusCode: StatusCodeResult }
       </ul>
 
       <div className="mt-4">
-        <p className="text-xs font-semibold text-muted-foreground">Worked examples</p>
+        <p className="text-xs font-semibold text-muted-foreground">
+          Worked examples
+        </p>
         <ul className="mt-1 flex flex-col gap-1">
           {EXAMPLES.map((example) => (
-            <li key={example.code} className="flex items-baseline gap-2 text-xs">
-              <span className="font-mono font-semibold tabular-nums">{example.code}</span>
+            <li
+              key={example.code}
+              className="flex items-baseline gap-2 text-xs"
+            >
+              <span className="font-mono font-semibold tabular-nums">
+                {example.code}
+              </span>
               <span className="text-muted-foreground">{example.meaning}</span>
             </li>
           ))}

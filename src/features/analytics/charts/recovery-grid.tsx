@@ -40,12 +40,18 @@ export function RecoveryGrid({ data }: { data: RecoveryPoint[] }) {
             </span>
           </figcaption>
           <ResponsiveContainer width="100%" height={120}>
-            <AreaChart data={data} margin={{ top: 4, right: 4, bottom: 0, left: 0 }}>
+            <AreaChart
+              data={data}
+              margin={{ top: 4, right: 4, bottom: 0, left: 0 }}
+            >
               <XAxis dataKey="date" hide />
               <YAxis hide domain={[0, "dataMax"]} />
               <Tooltip
                 content={
-                  <ChartTooltip unit={metric.unit} labelFormatter={formatDayMonth} />
+                  <ChartTooltip
+                    unit={metric.unit}
+                    labelFormatter={formatDayMonth}
+                  />
                 }
               />
               <Area

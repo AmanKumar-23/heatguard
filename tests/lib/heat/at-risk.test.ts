@@ -2,7 +2,9 @@ import { describe, expect, it } from "vitest";
 
 import { rankAtRisk, type AtRiskInput } from "@/lib/heat/at-risk";
 
-function region(overrides: Partial<AtRiskInput> & { name: string }): AtRiskInput {
+function region(
+  overrides: Partial<AtRiskInput> & { name: string },
+): AtRiskInput {
   return {
     regionId: overrides.name.toLowerCase(),
     state: "Telangana",
@@ -16,9 +18,21 @@ function region(overrides: Partial<AtRiskInput> & { name: string }): AtRiskInput
 describe("rankAtRisk", () => {
   it("includes high vulnerability + current elevated, excludes others", () => {
     const result = rankAtRisk([
-      region({ name: "HighVulnRed", vulnerabilityScore: 70, currentLevel: "RED" }),
-      region({ name: "LowVulnRed", vulnerabilityScore: 30, currentLevel: "RED" }),
-      region({ name: "HighVulnCalm", vulnerabilityScore: 70, currentLevel: "YELLOW" }),
+      region({
+        name: "HighVulnRed",
+        vulnerabilityScore: 70,
+        currentLevel: "RED",
+      }),
+      region({
+        name: "LowVulnRed",
+        vulnerabilityScore: 30,
+        currentLevel: "RED",
+      }),
+      region({
+        name: "HighVulnCalm",
+        vulnerabilityScore: 70,
+        currentLevel: "YELLOW",
+      }),
     ]);
     expect(result.map((r) => r.name)).toEqual(["HighVulnRed"]);
   });

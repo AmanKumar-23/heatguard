@@ -31,12 +31,12 @@ npm run lint && npm run test && npm run build
 
 ## Standards CI expects
 
-| Check | Command | Requirement |
-| --- | --- | --- |
-| Lint & format | `npm run lint` | ESLint (Next.js + Prettier) passes. Run `npm run format` before committing. |
-| Unit + integration tests | `npm run test` | All Vitest suites pass. |
-| Production build | `npm run build` | Compiles with no type errors. |
-| E2E + accessibility | `npm run build && npm run test:e2e` | Smoke flow passes; **no `serious`/`critical` axe violations**. |
+| Check                    | Command                             | Requirement                                                                 |
+| ------------------------ | ----------------------------------- | --------------------------------------------------------------------------- |
+| Lint & format            | `npm run lint`                      | ESLint (Next.js + Prettier) passes. Run `npm run format` before committing. |
+| Unit + integration tests | `npm run test`                      | All Vitest suites pass.                                                     |
+| Production build         | `npm run build`                     | Compiles with no type errors.                                               |
+| E2E + accessibility      | `npm run build && npm run test:e2e` | Smoke flow passes; **no `serious`/`critical` axe violations**.              |
 
 ### Accessibility & responsiveness
 

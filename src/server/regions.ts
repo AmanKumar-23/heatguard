@@ -98,7 +98,11 @@ export async function getRegionsOverview(): Promise<RegionOverview[]> {
     include: {
       vulnerablePopulation: true,
       temperatureReadings: { orderBy: { timestamp: "desc" }, take: 1 },
-      heatAlerts: { where: { active: true }, orderBy: { issuedAt: "desc" }, take: 1 },
+      heatAlerts: {
+        where: { active: true },
+        orderBy: { issuedAt: "desc" },
+        take: 1,
+      },
     },
   });
 
@@ -208,25 +212,26 @@ export async function getRegionDetail(
     throw new NotFoundError(`Region '${regionId}' was not found.`);
   }
 
-  const [readings, latestReading, alerts, recovery, surveys] = await Promise.all([
-    prisma.temperatureReading.findMany({
-      where: { regionId, timestamp: dateRangeFilter(range.from, range.to) },
-      orderBy: { timestamp: "asc" },
-    }),
-    prisma.temperatureReading.findFirst({
-      where: { regionId },
-      orderBy: { timestamp: "desc" },
-    }),
-    prisma.heatAlert.findMany({
-      where: { regionId },
-      orderBy: { issuedAt: "desc" },
-    }),
-    prisma.recoveryIndicator.findMany({
-      where: { regionId, date: dateRangeFilter(range.from, range.to) },
-      orderBy: { date: "asc" },
-    }),
-    prisma.surveyResponse.findMany({ where: { regionId } }),
-  ]);
+  const [readings, latestReading, alerts, recovery, surveys] =
+    await Promise.all([
+      prisma.temperatureReading.findMany({
+        where: { regionId, timestamp: dateRangeFilter(range.from, range.to) },
+        orderBy: { timestamp: "asc" },
+      }),
+      prisma.temperatureReading.findFirst({
+        where: { regionId },
+        orderBy: { timestamp: "desc" },
+      }),
+      prisma.heatAlert.findMany({
+        where: { regionId },
+        orderBy: { issuedAt: "desc" },
+      }),
+      prisma.recoveryIndicator.findMany({
+        where: { regionId, date: dateRangeFilter(range.from, range.to) },
+        orderBy: { date: "asc" },
+      }),
+      prisma.surveyResponse.findMany({ where: { regionId } }),
+    ]);
 
   const vulnerabilityScore = region.vulnerablePopulation
     ? computeVulnerabilityScore(region, region.vulnerablePopulation)
@@ -249,16 +254,20 @@ export async function getRegionDetail(
     },
     current: {
       latestReading: latestReading ? toReadingDTO(latestReading) : null,
-      level: latestReading ? classifyAlertLevel(latestReading.heatIndexC) : "NORMAL",
+      level: latestReading
+        ? classifyAlertLevel(latestReading.heatIndexC)
+        : "NORMAL",
       healthRiskScore,
     },
     vulnerability:
       region.vulnerablePopulation && vulnerabilityScore !== null
         ? {
             elderlyCount: region.vulnerablePopulation.elderlyCount,
-            outdoorWorkersCount: region.vulnerablePopulation.outdoorWorkersCount,
+            outdoorWorkersCount:
+              region.vulnerablePopulation.outdoorWorkersCount,
             childrenCount: region.vulnerablePopulation.childrenCount,
-            hasCoolingAccessPct: region.vulnerablePopulation.hasCoolingAccessPct,
+            hasCoolingAccessPct:
+              region.vulnerablePopulation.hasCoolingAccessPct,
             hasWaterAccessPct: region.vulnerablePopulation.hasWaterAccessPct,
             score: vulnerabilityScore,
           }

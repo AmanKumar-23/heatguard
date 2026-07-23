@@ -87,7 +87,10 @@ export default async function RegionDetailPage({
     },
     {
       label: "Health risk",
-      value: current.healthRiskScore !== null ? `${current.healthRiskScore} / 100` : "—",
+      value:
+        current.healthRiskScore !== null
+          ? `${current.healthRiskScore} / 100`
+          : "—",
     },
     {
       label: "Last reading",
@@ -122,7 +125,10 @@ export default async function RegionDetailPage({
               {region.name}
             </h1>
           </div>
-          <AlertBadge level={current.level} className="mt-1 px-3 py-1 text-sm" />
+          <AlertBadge
+            level={current.level}
+            className="mt-1 px-3 py-1 text-sm"
+          />
         </div>
 
         <dl className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
@@ -132,7 +138,9 @@ export default async function RegionDetailPage({
               className="rounded-lg border border-border bg-card px-4 py-3"
             >
               <dt className="text-xs text-muted-foreground">{stat.label}</dt>
-              <dd className="mt-0.5 font-semibold tabular-nums">{stat.value}</dd>
+              <dd className="mt-0.5 font-semibold tabular-nums">
+                {stat.value}
+              </dd>
             </div>
           ))}
         </dl>
@@ -143,7 +151,9 @@ export default async function RegionDetailPage({
         <Card>
           <CardHeader>
             <CardTitle>Temperature &amp; heat-index trend</CardTitle>
-            <CardDescription>Last {readings.length} daily readings</CardDescription>
+            <CardDescription>
+              Last {readings.length} daily readings
+            </CardDescription>
           </CardHeader>
           <CardContent>
             {readings.length > 0 ? (
@@ -165,7 +175,9 @@ export default async function RegionDetailPage({
                 ]}
               />
             ) : (
-              <p className="text-sm text-muted-foreground">No readings available.</p>
+              <p className="text-sm text-muted-foreground">
+                No readings available.
+              </p>
             )}
           </CardContent>
         </Card>
@@ -180,7 +192,9 @@ export default async function RegionDetailPage({
           <Card>
             <CardHeader>
               <CardTitle>Vulnerability snapshot</CardTitle>
-              <CardDescription>Composite heat-vulnerability index</CardDescription>
+              <CardDescription>
+                Composite heat-vulnerability index
+              </CardDescription>
             </CardHeader>
             <CardContent>
               {vulnerability ? (
@@ -197,20 +211,42 @@ export default async function RegionDetailPage({
                   >
                     <div
                       className="h-full rounded-full bg-orange-500"
-                      style={{ width: `${Math.min(100, Math.max(0, vulnerability.score))}%` }}
+                      style={{
+                        width: `${Math.min(100, Math.max(0, vulnerability.score))}%`,
+                      }}
                     />
                   </div>
                   <dl className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
                     {[
-                      { label: "Elderly (65+)", value: formatNumber(vulnerability.elderlyCount) },
-                      { label: "Outdoor workers", value: formatNumber(vulnerability.outdoorWorkersCount) },
-                      { label: "Children (under 5)", value: formatNumber(vulnerability.childrenCount) },
-                      { label: "Cooling access", value: `${vulnerability.hasCoolingAccessPct}%` },
-                      { label: "Water access", value: `${vulnerability.hasWaterAccessPct}%` },
+                      {
+                        label: "Elderly (65+)",
+                        value: formatNumber(vulnerability.elderlyCount),
+                      },
+                      {
+                        label: "Outdoor workers",
+                        value: formatNumber(vulnerability.outdoorWorkersCount),
+                      },
+                      {
+                        label: "Children (under 5)",
+                        value: formatNumber(vulnerability.childrenCount),
+                      },
+                      {
+                        label: "Cooling access",
+                        value: `${vulnerability.hasCoolingAccessPct}%`,
+                      },
+                      {
+                        label: "Water access",
+                        value: `${vulnerability.hasWaterAccessPct}%`,
+                      },
                     ].map((item) => (
-                      <div key={item.label} className="flex justify-between gap-2">
+                      <div
+                        key={item.label}
+                        className="flex justify-between gap-2"
+                      >
                         <dt className="text-muted-foreground">{item.label}</dt>
-                        <dd className="font-medium tabular-nums">{item.value}</dd>
+                        <dd className="font-medium tabular-nums">
+                          {item.value}
+                        </dd>
                       </div>
                     ))}
                   </dl>
@@ -237,13 +273,31 @@ export default async function RegionDetailPage({
               {latestRecovery ? (
                 <dl className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
                   {[
-                    { label: "Hospital admissions", value: formatNumber(latestRecovery.hospitalAdmissions) },
-                    { label: "Workdays lost", value: formatNumber(latestRecovery.workdaysLost) },
-                    { label: "Crop loss", value: `${latestRecovery.cropLossPct}%` },
-                    { label: "Electricity failures", value: formatNumber(latestRecovery.electricityFailures) },
-                    { label: "Water scarcity index", value: `${latestRecovery.waterScarcityIndex}` },
+                    {
+                      label: "Hospital admissions",
+                      value: formatNumber(latestRecovery.hospitalAdmissions),
+                    },
+                    {
+                      label: "Workdays lost",
+                      value: formatNumber(latestRecovery.workdaysLost),
+                    },
+                    {
+                      label: "Crop loss",
+                      value: `${latestRecovery.cropLossPct}%`,
+                    },
+                    {
+                      label: "Electricity failures",
+                      value: formatNumber(latestRecovery.electricityFailures),
+                    },
+                    {
+                      label: "Water scarcity index",
+                      value: `${latestRecovery.waterScarcityIndex}`,
+                    },
                   ].map((item) => (
-                    <div key={item.label} className="flex justify-between gap-2">
+                    <div
+                      key={item.label}
+                      className="flex justify-between gap-2"
+                    >
                       <dt className="text-muted-foreground">{item.label}</dt>
                       <dd className="font-medium tabular-nums">{item.value}</dd>
                     </div>
@@ -262,13 +316,18 @@ export default async function RegionDetailPage({
         <Card>
           <CardHeader>
             <CardTitle>Active &amp; recent alerts</CardTitle>
-            <CardDescription>Most recent early-warning bulletins</CardDescription>
+            <CardDescription>
+              Most recent early-warning bulletins
+            </CardDescription>
           </CardHeader>
           <CardContent>
             {alerts.length > 0 ? (
               <ul className="flex flex-col divide-y divide-border">
                 {alerts.slice(0, 6).map((alert) => (
-                  <li key={alert.id} className="flex flex-col gap-1 py-3 first:pt-0 last:pb-0">
+                  <li
+                    key={alert.id}
+                    className="flex flex-col gap-1 py-3 first:pt-0 last:pb-0"
+                  >
                     <div className="flex flex-wrap items-center gap-2">
                       <AlertBadge level={toHeatAlertLevel(alert.level)} />
                       <span className="text-xs text-muted-foreground">
@@ -280,7 +339,9 @@ export default async function RegionDetailPage({
                         </span>
                       ) : null}
                     </div>
-                    <p className="text-sm text-muted-foreground">{alert.message}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {alert.message}
+                    </p>
                   </li>
                 ))}
               </ul>

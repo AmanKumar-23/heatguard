@@ -22,7 +22,8 @@ export default function DashboardError({
       <TriangleAlert className="size-8 text-destructive" aria-hidden />
       <h1 className="mt-3 text-lg font-semibold">Something went wrong</h1>
       <p className="mt-1 max-w-sm text-sm text-muted-foreground">
-        We couldn’t load the monitoring dashboard. This may be a temporary issue.
+        We couldn’t load the monitoring dashboard. This may be a temporary
+        issue.
       </p>
       <Button onClick={() => reset()} className="mt-4">
         <RotateCw className="size-4" aria-hidden />

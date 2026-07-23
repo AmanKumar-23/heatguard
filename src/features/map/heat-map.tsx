@@ -87,7 +87,10 @@ export function HeatMap() {
       attributionControl: { compact: true },
     });
     mapRef.current = map;
-    map.addControl(new NavigationControl({ showCompass: false }), "bottom-right");
+    map.addControl(
+      new NavigationControl({ showCompass: false }),
+      "bottom-right",
+    );
 
     map.on("load", () => {
       loadedRef.current = true;
@@ -130,7 +133,11 @@ export function HeatMap() {
     if (!map || !loadedRef.current) return;
     for (const id of MARKER_LAYERS) {
       if (map.getLayer(id)) {
-        map.setLayoutProperty(id, "visibility", showMarkers ? "visible" : "none");
+        map.setLayoutProperty(
+          id,
+          "visibility",
+          showMarkers ? "visible" : "none",
+        );
       }
     }
   }, [showMarkers]);
@@ -178,16 +185,38 @@ export function HeatMap() {
         <div className="pointer-events-auto absolute left-3 top-3 z-10">
           <MapControls
             toggles={[
-              { id: "markers", label: "Markers", checked: showMarkers, onChange: setShowMarkers },
-              { id: "heatmap", label: "Heatmap", checked: showHeatmap, onChange: setShowHeatmap },
-              { id: "alert", label: "Alert-only (Orange / Red)", checked: alertOnly, onChange: setAlertOnly },
-              { id: "vulnerability", label: "Vulnerability shading", checked: vulnerabilityShading, onChange: setVulnerabilityShading },
+              {
+                id: "markers",
+                label: "Markers",
+                checked: showMarkers,
+                onChange: setShowMarkers,
+              },
+              {
+                id: "heatmap",
+                label: "Heatmap",
+                checked: showHeatmap,
+                onChange: setShowHeatmap,
+              },
+              {
+                id: "alert",
+                label: "Alert-only (Orange / Red)",
+                checked: alertOnly,
+                onChange: setAlertOnly,
+              },
+              {
+                id: "vulnerability",
+                label: "Vulnerability shading",
+                checked: vulnerabilityShading,
+                onChange: setVulnerabilityShading,
+              },
             ]}
           />
         </div>
 
         <div className="pointer-events-auto absolute bottom-3 left-3 z-10">
-          <MapLegend colorMode={vulnerabilityShading ? "vulnerability" : "level"} />
+          <MapLegend
+            colorMode={vulnerabilityShading ? "vulnerability" : "level"}
+          />
         </div>
 
         {selected ? (

@@ -29,13 +29,20 @@ export function CrossRegionChart({
 
   return (
     <div>
-      <ResponsiveContainer width="100%" height={Math.max(240, data.length * 26)}>
+      <ResponsiveContainer
+        width="100%"
+        height={Math.max(240, data.length * 26)}
+      >
         <BarChart
           data={data}
           layout="vertical"
           margin={{ top: 4, right: 16, bottom: 0, left: 8 }}
         >
-          <CartesianGrid horizontal={false} stroke={AXIS_GRID} strokeDasharray="3 3" />
+          <CartesianGrid
+            horizontal={false}
+            stroke={AXIS_GRID}
+            strokeDasharray="3 3"
+          />
           <XAxis
             type="number"
             domain={[0, "dataMax + 4"]}
@@ -56,12 +63,21 @@ export function CrossRegionChart({
             cursor={{ fill: CURSOR_FILL, fillOpacity: 0.3 }}
             content={<ChartTooltip unit="°C" />}
           />
-          <Bar dataKey="peakHeatIndex" name="Peak heat index" radius={[0, 4, 4, 0]} isAnimationActive={false}>
+          <Bar
+            dataKey="peakHeatIndex"
+            name="Peak heat index"
+            radius={[0, 4, 4, 0]}
+            isAnimationActive={false}
+          >
             {data.map((entry) => (
               <Cell
                 key={entry.id}
                 fill={stateColor(entry.state)}
-                stroke={entry.id === selectedId ? "var(--color-foreground)" : "transparent"}
+                stroke={
+                  entry.id === selectedId
+                    ? "var(--color-foreground)"
+                    : "transparent"
+                }
                 strokeWidth={entry.id === selectedId ? 2 : 0}
               />
             ))}
@@ -71,7 +87,10 @@ export function CrossRegionChart({
 
       <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-1">
         {statesPresent.map((state) => (
-          <li key={state} className="flex items-center gap-1.5 text-xs text-muted-foreground">
+          <li
+            key={state}
+            className="flex items-center gap-1.5 text-xs text-muted-foreground"
+          >
             <span
               className="size-2.5 rounded-full"
               style={{ backgroundColor: stateColor(state) }}

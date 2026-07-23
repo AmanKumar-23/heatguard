@@ -26,18 +26,19 @@ across India. It enables users to:
 The application is organised around the project's **four pillars**. Each pillar maps 1:1 to
 a core module.
 
-| Pillar | Module | Scope |
-| --- | --- | --- |
-| **Response** | Real-time monitoring & alerts | Live monitoring dashboard, telemetry ingestion, early-warning alerts using IMD-style levels (Normal / Yellow / Orange / Red). |
-| **Recovery** | Recovery indicators tracking | Hospital admissions, workdays lost, crop losses, electricity failures, water scarcity — tracked over time per district. |
-| **Future Challenges** | Trend analysis & scenario view | Historical trend analysis and scenario modelling for urban heat islands and water stress. |
-| **Role of Technology** | GIS & AI intelligence | GIS hotspot mapping, remote-sensing-style overlay layers, AI-driven heat & health-risk prediction. |
+| Pillar                 | Module                         | Scope                                                                                                                         |
+| ---------------------- | ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------- |
+| **Response**           | Real-time monitoring & alerts  | Live monitoring dashboard, telemetry ingestion, early-warning alerts using IMD-style levels (Normal / Yellow / Orange / Red). |
+| **Recovery**           | Recovery indicators tracking   | Hospital admissions, workdays lost, crop losses, electricity failures, water scarcity — tracked over time per district.       |
+| **Future Challenges**  | Trend analysis & scenario view | Historical trend analysis and scenario modelling for urban heat islands and water stress.                                     |
+| **Role of Technology** | GIS & AI intelligence          | GIS hotspot mapping, remote-sensing-style overlay layers, AI-driven heat & health-risk prediction.                            |
 
 ---
 
 ## 3. Tech Stack
 
 **Web application**
+
 - **Framework:** Next.js 14+ (App Router, TypeScript)
 - **Styling:** Tailwind CSS + shadcn/ui
 - **Data layer:** Prisma ORM + SQLite (development)
@@ -45,10 +46,12 @@ a core module.
 - **Charts:** Recharts
 
 **Prediction microservice** (separate process)
+
 - **API:** FastAPI (Python)
 - **ML:** scikit-learn
 
 **Testing**
+
 - **Unit / integration:** Vitest
 - **End-to-end:** Playwright
 
@@ -69,14 +72,14 @@ a core module.
 
 ## 5. Domain Glossary
 
-| Term | Definition |
-| --- | --- |
-| **Heat index** | Perceived temperature combining air temperature and relative humidity ("feels like"). |
-| **Heat-wave alert levels** | IMD-style severity tiers: **Normal**, **Yellow** (watch), **Orange** (warning), **Red** (emergency). |
-| **Urban Heat Island (UHI)** | Localised warming where built-up urban areas are significantly hotter than surrounding rural land. |
-| **Vulnerability index** | Composite score of a population's susceptibility to heat harm (e.g. age, health, occupation, access to cooling). |
-| **Recovery indicator** | A measurable signal of post-event impact and recuperation (hospital admissions, workdays lost, crop losses, electricity failures, water scarcity). |
-| **Telemetry reading** | A single timestamped sensor/station observation (e.g. temperature, humidity) for a location. |
+| Term                        | Definition                                                                                                                                         |
+| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Heat index**              | Perceived temperature combining air temperature and relative humidity ("feels like").                                                              |
+| **Heat-wave alert levels**  | IMD-style severity tiers: **Normal**, **Yellow** (watch), **Orange** (warning), **Red** (emergency).                                               |
+| **Urban Heat Island (UHI)** | Localised warming where built-up urban areas are significantly hotter than surrounding rural land.                                                 |
+| **Vulnerability index**     | Composite score of a population's susceptibility to heat harm (e.g. age, health, occupation, access to cooling).                                   |
+| **Recovery indicator**      | A measurable signal of post-event impact and recuperation (hospital admissions, workdays lost, crop losses, electricity failures, water scarcity). |
+| **Telemetry reading**       | A single timestamped sensor/station observation (e.g. temperature, humidity) for a location.                                                       |
 
 ---
 
@@ -120,14 +123,15 @@ to Tailwind via `@theme` and consumed as utilities (`bg-*`, `text-*`, `border-*`
 consistently across the app (badges, KPI accents, charts). Each has a light and dark value,
 tuned for readable tints and dots in both modes:
 
-| Token / utility | Alert level | Meaning |
-| --- | --- | --- |
-| `--heat-normal` / `heat-normal` | **Normal** | cool green — no action |
-| `--heat-yellow` / `heat-yellow` | **Yellow** | amber — watch |
-| `--heat-orange` / `heat-orange` | **Orange** | orange — warning |
-| `--heat-red` / `heat-red` | **Red** | hot red — emergency |
+| Token / utility                 | Alert level | Meaning                |
+| ------------------------------- | ----------- | ---------------------- |
+| `--heat-normal` / `heat-normal` | **Normal**  | cool green — no action |
+| `--heat-yellow` / `heat-yellow` | **Yellow**  | amber — watch          |
+| `--heat-orange` / `heat-orange` | **Orange**  | orange — warning       |
+| `--heat-red` / `heat-red`       | **Red**     | hot red — emergency    |
 
 Usage rules:
+
 - `AlertBadge` carries the level colour via a dot + tinted background + border; the **text
   label stays in foreground ink** so contrast always passes (never colour-alone).
 - Charts use the theme's `--chart-1..5` categorical tokens (with a legend), not the heat scale.

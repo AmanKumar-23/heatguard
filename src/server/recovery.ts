@@ -1,6 +1,10 @@
 import { prisma } from "./db";
 import { assertRegionExists } from "./regions";
-import { dateRangeFilter, toRecoveryDTO, type RecoveryDTO } from "./serializers";
+import {
+  dateRangeFilter,
+  toRecoveryDTO,
+  type RecoveryDTO,
+} from "./serializers";
 
 /** List a region's recovery indicators within an optional date window. */
 export async function getRecovery(params: {

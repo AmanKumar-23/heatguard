@@ -9,7 +9,11 @@
 import type { HeatAlertLevel } from "@/lib/enums";
 import { formatDateTimeUTC, formatDateUTC, formatNumber } from "@/lib/format";
 import { BarChartSVG, LEVEL_COLORS, RegionMapSVG } from "@/lib/report/figures";
-import type { ReportChapter, ReportModel, ReportOptions } from "@/lib/report/types";
+import type {
+  ReportChapter,
+  ReportModel,
+  ReportOptions,
+} from "@/lib/report/types";
 
 const LEVEL_LABEL: Record<HeatAlertLevel, string> = {
   NORMAL: "Normal",
@@ -26,11 +30,21 @@ function LevelChip({ level }: { level: HeatAlertLevel }) {
   );
 }
 
-function Figure({ n, caption, children }: { n: number; caption: string; children: React.ReactNode }) {
+function Figure({
+  n,
+  caption,
+  children,
+}: {
+  n: number;
+  caption: string;
+  children: React.ReactNode;
+}) {
   return (
     <figure>
       {children}
-      <figcaption>Figure {n}. {caption}</figcaption>
+      <figcaption>
+        Figure {n}. {caption}
+      </figcaption>
     </figure>
   );
 }
@@ -83,7 +97,9 @@ function buildFindings(model: ReportModel): string[] {
 
 function defaultExecSummary(model: ReportModel): string {
   const { studyArea, response, vulnerability } = model;
-  const asOf = model.meta.dataAsOf ? formatDateUTC(model.meta.dataAsOf) : "the latest available data";
+  const asOf = model.meta.dataAsOf
+    ? formatDateUTC(model.meta.dataAsOf)
+    : "the latest available data";
   return (
     `As of ${asOf}, HeatGuard monitors ${studyArea.regionCount} districts across ${studyArea.stateCount} states, covering a combined population of ${formatNumber(studyArea.totalPopulation)}. ` +
     `${response.activeAlertCount} early warning${response.activeAlertCount === 1 ? " is" : "s are"} currently active, and ${vulnerability.atRisk.length} district${vulnerability.atRisk.length === 1 ? "" : "s"} fall within the high-risk intersection of heat and vulnerability. ` +
@@ -91,14 +107,26 @@ function defaultExecSummary(model: ReportModel): string {
   );
 }
 
-function DataChapterBody({ chapter, model, options }: { chapter: ReportChapter; model: ReportModel; options: ReportOptions }) {
+function DataChapterBody({
+  chapter,
+  model,
+  options,
+}: {
+  chapter: ReportChapter;
+  model: ReportModel;
+  options: ReportOptions;
+}) {
   if (chapter.key === "study-area") {
     const { studyArea } = model;
     return (
       <>
         <table>
           <thead>
-            <tr><th>State</th><th>Districts</th><th>Population</th></tr>
+            <tr>
+              <th>State</th>
+              <th>Districts</th>
+              <th>Population</th>
+            </tr>
           </thead>
           <tbody>
             {studyArea.states.map((s) => (
@@ -126,8 +154,15 @@ function DataChapterBody({ chapter, model, options }: { chapter: ReportChapter; 
           .
         </p>
         {studyArea.regions.length > 0 ? (
-          <Figure n={1} caption="Monitored districts by location, sized by population and coloured by current alert level.">
-            <RegionMapSVG regions={studyArea.regions} colorBy="level" ariaLabel="Map of monitored districts by alert level" />
+          <Figure
+            n={1}
+            caption="Monitored districts by location, sized by population and coloured by current alert level."
+          >
+            <RegionMapSVG
+              regions={studyArea.regions}
+              colorBy="level"
+              ariaLabel="Map of monitored districts by alert level"
+            />
           </Figure>
         ) : (
           <p className="empty">No region data available.</p>
@@ -146,35 +181,75 @@ function DataChapterBody({ chapter, model, options }: { chapter: ReportChapter; 
     return (
       <>
         <div className="stat-row">
-          <div className="stat"><span className="stat-value">{response.activeAlertCount}</span><span className="stat-label">Active warnings</span></div>
-          <div className="stat"><span className="stat-value">{response.avgHeatIndexC ?? "—"}{response.avgHeatIndexC !== null ? "°C" : ""}</span><span className="stat-label">Avg. heat index</span></div>
-          <div className="stat"><span className="stat-value">{response.statusCode?.code ?? "—"}</span><span className="stat-label">System status ({response.statusCode?.overall ?? "n/a"})</span></div>
+          <div className="stat">
+            <span className="stat-value">{response.activeAlertCount}</span>
+            <span className="stat-label">Active warnings</span>
+          </div>
+          <div className="stat">
+            <span className="stat-value">
+              {response.avgHeatIndexC ?? "—"}
+              {response.avgHeatIndexC !== null ? "°C" : ""}
+            </span>
+            <span className="stat-label">Avg. heat index</span>
+          </div>
+          <div className="stat">
+            <span className="stat-value">
+              {response.statusCode?.code ?? "—"}
+            </span>
+            <span className="stat-label">
+              System status ({response.statusCode?.overall ?? "n/a"})
+            </span>
+          </div>
         </div>
-        <Figure n={2} caption="Distribution of monitored districts across IMD-style alert levels.">
+        <Figure
+          n={2}
+          caption="Distribution of monitored districts across IMD-style alert levels."
+        >
           <BarChartSVG data={levelData} ariaLabel="Alert-level distribution" />
         </Figure>
         {response.worstHit.length > 0 ? (
           <>
-            <Figure n={3} caption="Worst-affected districts by current heat index (°C).">
+            <Figure
+              n={3}
+              caption="Worst-affected districts by current heat index (°C)."
+            >
               <BarChartSVG
-                data={response.worstHit.map((r) => ({ label: `${r.name}`, value: r.heatIndexC, color: LEVEL_COLORS[r.level] }))}
+                data={response.worstHit.map((r) => ({
+                  label: `${r.name}`,
+                  value: r.heatIndexC,
+                  color: LEVEL_COLORS[r.level],
+                }))}
                 ariaLabel="Worst-affected districts by heat index"
                 format={(v) => `${v}°C`}
               />
             </Figure>
             <table>
-              <thead><tr><th>District</th><th>State</th><th>Heat index</th><th>Level</th></tr></thead>
+              <thead>
+                <tr>
+                  <th>District</th>
+                  <th>State</th>
+                  <th>Heat index</th>
+                  <th>Level</th>
+                </tr>
+              </thead>
               <tbody>
                 {response.worstHit.map((r) => (
                   <tr key={`${r.name}-${r.state}`}>
-                    <td>{r.name}</td><td>{r.state}</td><td>{r.heatIndexC}°C</td><td><LevelChip level={r.level} /></td>
+                    <td>{r.name}</td>
+                    <td>{r.state}</td>
+                    <td>{r.heatIndexC}°C</td>
+                    <td>
+                      <LevelChip level={r.level} />
+                    </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </>
         ) : (
-          <p className="empty">No current readings available to rank affected districts.</p>
+          <p className="empty">
+            No current readings available to rank affected districts.
+          </p>
         )}
       </>
     );
@@ -183,25 +258,62 @@ function DataChapterBody({ chapter, model, options }: { chapter: ReportChapter; 
   if (chapter.key === "recovery") {
     const { recovery } = model;
     if (!recovery.available) {
-      return <p className="empty">Recovery indicator data is not available for this report.</p>;
+      return (
+        <p className="empty">
+          Recovery indicator data is not available for this report.
+        </p>
+      );
     }
     return (
       <>
         <div className="stat-row">
-          <div className="stat"><span className="stat-value">{formatNumber(recovery.totals.hospitalAdmissions)}</span><span className="stat-label">Hospital admissions</span></div>
-          <div className="stat"><span className="stat-value">{formatNumber(recovery.totals.workdaysLost)}</span><span className="stat-label">Workdays lost</span></div>
-          <div className="stat"><span className="stat-value">{recovery.totals.avgCropLossPct}%</span><span className="stat-label">Avg. crop loss</span></div>
-          <div className="stat"><span className="stat-value">{formatNumber(recovery.totals.electricityFailures)}</span><span className="stat-label">Electricity failures</span></div>
+          <div className="stat">
+            <span className="stat-value">
+              {formatNumber(recovery.totals.hospitalAdmissions)}
+            </span>
+            <span className="stat-label">Hospital admissions</span>
+          </div>
+          <div className="stat">
+            <span className="stat-value">
+              {formatNumber(recovery.totals.workdaysLost)}
+            </span>
+            <span className="stat-label">Workdays lost</span>
+          </div>
+          <div className="stat">
+            <span className="stat-value">
+              {recovery.totals.avgCropLossPct}%
+            </span>
+            <span className="stat-label">Avg. crop loss</span>
+          </div>
+          <div className="stat">
+            <span className="stat-value">
+              {formatNumber(recovery.totals.electricityFailures)}
+            </span>
+            <span className="stat-label">Electricity failures</span>
+          </div>
         </div>
-        <Figure n={4} caption="Districts with the highest cumulative heat-related hospital admissions.">
+        <Figure
+          n={4}
+          caption="Districts with the highest cumulative heat-related hospital admissions."
+        >
           <BarChartSVG
-            data={recovery.worstByAdmissions.map((r) => ({ label: r.name, value: r.hospitalAdmissions, color: "#dc2626" }))}
+            data={recovery.worstByAdmissions.map((r) => ({
+              label: r.name,
+              value: r.hospitalAdmissions,
+              color: "#dc2626",
+            }))}
             ariaLabel="Hospital admissions by district"
           />
         </Figure>
         {recovery.series.length > 0 ? (
           <table>
-            <thead><tr><th>Date</th><th>Hospital admissions</th><th>Workdays lost</th></tr></thead>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Hospital admissions</th>
+                <th>Workdays lost</th>
+              </tr>
+            </thead>
             <tbody>
               {recovery.series.map((p) => (
                 <tr key={p.date}>
@@ -231,21 +343,46 @@ function DataChapterBody({ chapter, model, options }: { chapter: ReportChapter; 
 
       {vulnerability.available && vulnerability.top.length > 0 ? (
         <>
-          <Figure n={5} caption="Districts ranked by composite vulnerability score (0–100).">
+          <Figure
+            n={5}
+            caption="Districts ranked by composite vulnerability score (0–100)."
+          >
             <BarChartSVG
-              data={vulnerability.top.map((r) => ({ label: r.name, value: r.score, color: "#7c5cbf" }))}
+              data={vulnerability.top.map((r) => ({
+                label: r.name,
+                value: r.score,
+                color: "#7c5cbf",
+              }))}
               ariaLabel="Vulnerability score by district"
             />
           </Figure>
           {vulnerability.atRisk.length > 0 ? (
             <table>
-              <thead><tr><th>District</th><th>State</th><th>Vulnerability</th><th>Current</th><th>Predicted</th></tr></thead>
+              <thead>
+                <tr>
+                  <th>District</th>
+                  <th>State</th>
+                  <th>Vulnerability</th>
+                  <th>Current</th>
+                  <th>Predicted</th>
+                </tr>
+              </thead>
               <tbody>
                 {vulnerability.atRisk.map((r) => (
                   <tr key={`${r.name}-${r.state}`}>
-                    <td>{r.name}</td><td>{r.state}</td><td>{r.score}</td>
-                    <td><LevelChip level={r.currentLevel} /></td>
-                    <td>{r.predictedLevel ? <LevelChip level={r.predictedLevel} /> : <span className="muted">n/a</span>}</td>
+                    <td>{r.name}</td>
+                    <td>{r.state}</td>
+                    <td>{r.score}</td>
+                    <td>
+                      <LevelChip level={r.currentLevel} />
+                    </td>
+                    <td>
+                      {r.predictedLevel ? (
+                        <LevelChip level={r.predictedLevel} />
+                      ) : (
+                        <span className="muted">n/a</span>
+                      )}
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -258,12 +395,25 @@ function DataChapterBody({ chapter, model, options }: { chapter: ReportChapter; 
         <>
           <h3>Predicted peak risk (next 7 days)</h3>
           <table>
-            <thead><tr><th>District</th><th>State</th><th>Peak heat index</th><th>Peak level</th><th>Days elevated</th></tr></thead>
+            <thead>
+              <tr>
+                <th>District</th>
+                <th>State</th>
+                <th>Peak heat index</th>
+                <th>Peak level</th>
+                <th>Days elevated</th>
+              </tr>
+            </thead>
             <tbody>
               {prediction.top.map((r) => (
                 <tr key={`${r.name}-${r.state}`}>
-                  <td>{r.name}</td><td>{r.state}</td><td>{r.peakHeatIndexC}°C</td>
-                  <td><LevelChip level={r.peakLevel} /></td><td>{r.daysElevated}</td>
+                  <td>{r.name}</td>
+                  <td>{r.state}</td>
+                  <td>{r.peakHeatIndexC}°C</td>
+                  <td>
+                    <LevelChip level={r.peakLevel} />
+                  </td>
+                  <td>{r.daysElevated}</td>
                 </tr>
               ))}
             </tbody>
@@ -304,14 +454,32 @@ export function ReportDocument({
 
       {/* Cover */}
       <section className="cover">
-        <div className="cover-kicker">HeatGuard · Heat Wave Early Warning System</div>
+        <div className="cover-kicker">
+          HeatGuard · Heat Wave Early Warning System
+        </div>
         <h1 className="cover-title">{model.meta.title}</h1>
         <p className="cover-subtitle">{model.meta.subtitle}</p>
         <div className="cover-meta">
-          <div><span>Prepared by</span><strong>{model.meta.organisation}</strong></div>
-          <div><span>Generated</span><strong>{formatDateTimeUTC(model.meta.generatedAt)}</strong></div>
-          <div><span>Data as of</span><strong>{model.meta.dataAsOf ? formatDateTimeUTC(model.meta.dataAsOf) : "—"}</strong></div>
-          <div><span>Focus states</span><strong>{model.meta.focusStates.join(", ")}</strong></div>
+          <div>
+            <span>Prepared by</span>
+            <strong>{model.meta.organisation}</strong>
+          </div>
+          <div>
+            <span>Generated</span>
+            <strong>{formatDateTimeUTC(model.meta.generatedAt)}</strong>
+          </div>
+          <div>
+            <span>Data as of</span>
+            <strong>
+              {model.meta.dataAsOf
+                ? formatDateTimeUTC(model.meta.dataAsOf)
+                : "—"}
+            </strong>
+          </div>
+          <div>
+            <span>Focus states</span>
+            <strong>{model.meta.focusStates.join(", ")}</strong>
+          </div>
         </div>
       </section>
 
@@ -341,7 +509,11 @@ export function ReportDocument({
             <p key={i}>{p}</p>
           ))}
           {chapter.kind === "data" ? (
-            <DataChapterBody chapter={chapter} model={model} options={options} />
+            <DataChapterBody
+              chapter={chapter}
+              model={model}
+              options={options}
+            />
           ) : null}
         </section>
       ))}

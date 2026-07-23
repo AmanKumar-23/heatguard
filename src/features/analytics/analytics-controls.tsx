@@ -65,7 +65,10 @@ export function AnalyticsControls({
   return (
     <div className="flex flex-wrap items-end gap-3 rounded-xl border border-border bg-card p-3">
       <div className="flex flex-col gap-1">
-        <label htmlFor="analytics-region" className="text-xs font-medium text-muted-foreground">
+        <label
+          htmlFor="analytics-region"
+          className="text-xs font-medium text-muted-foreground"
+        >
           Region
         </label>
         <select
@@ -87,7 +90,10 @@ export function AnalyticsControls({
       </div>
 
       <div className="flex flex-col gap-1">
-        <label htmlFor="analytics-from" className="text-xs font-medium text-muted-foreground">
+        <label
+          htmlFor="analytics-from"
+          className="text-xs font-medium text-muted-foreground"
+        >
           From
         </label>
         <input
@@ -96,13 +102,18 @@ export function AnalyticsControls({
           value={from}
           min={min}
           max={to}
-          onChange={(event) => event.target.value && push({ from: event.target.value })}
+          onChange={(event) =>
+            event.target.value && push({ from: event.target.value })
+          }
           className={fieldClass}
         />
       </div>
 
       <div className="flex flex-col gap-1">
-        <label htmlFor="analytics-to" className="text-xs font-medium text-muted-foreground">
+        <label
+          htmlFor="analytics-to"
+          className="text-xs font-medium text-muted-foreground"
+        >
           To
         </label>
         <input
@@ -111,18 +122,31 @@ export function AnalyticsControls({
           value={to}
           min={from}
           max={max}
-          onChange={(event) => event.target.value && push({ to: event.target.value })}
+          onChange={(event) =>
+            event.target.value && push({ to: event.target.value })
+          }
           className={fieldClass}
         />
       </div>
 
       <div className="flex items-center gap-1">
         {PRESETS.map((days) => (
-          <Button key={days} type="button" variant="outline" size="sm" onClick={() => applyPreset(days)}>
+          <Button
+            key={days}
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={() => applyPreset(days)}
+          >
             {days}d
           </Button>
         ))}
-        <Button type="button" variant="outline" size="sm" onClick={() => push({ from: min, to: max })}>
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={() => push({ from: min, to: max })}
+        >
           All
         </Button>
       </div>

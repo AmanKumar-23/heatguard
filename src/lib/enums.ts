@@ -33,12 +33,7 @@ export type DistrictType = (typeof DISTRICT_TYPES)[number];
  * IMD-style heat-wave alert levels, ordered by increasing severity.
  * Normal / Yellow (watch) / Orange (warning) / Red (emergency).
  */
-export const HEAT_ALERT_LEVELS = [
-  "NORMAL",
-  "YELLOW",
-  "ORANGE",
-  "RED",
-] as const;
+export const HEAT_ALERT_LEVELS = ["NORMAL", "YELLOW", "ORANGE", "RED"] as const;
 
 export type HeatAlertLevel = (typeof HEAT_ALERT_LEVELS)[number];
 

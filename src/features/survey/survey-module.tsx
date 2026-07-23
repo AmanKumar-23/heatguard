@@ -106,7 +106,13 @@ export function SurveyModule({
         setResponses((current) =>
           current.map((row) =>
             row.id === tempId
-              ? { ...optimistic, id: created.id, submittedAt: created.submittedAt, notes: created.notes, pending: false }
+              ? {
+                  ...optimistic,
+                  id: created.id,
+                  submittedAt: created.submittedAt,
+                  notes: created.notes,
+                  pending: false,
+                }
               : row,
           ),
         );
@@ -154,7 +160,10 @@ export function SurveyModule({
         bucket.count,
       ]),
     ];
-    downloadCsv("heatguard-survey-summary.csv", toCsv(["Metric", "Value"], rows));
+    downloadCsv(
+      "heatguard-survey-summary.csv",
+      toCsv(["Metric", "Value"], rows),
+    );
   }, [summary]);
 
   const filtersActive = regionFilter !== "" || fromDate !== "" || toDate !== "";
@@ -176,7 +185,10 @@ export function SurveyModule({
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div className="flex flex-wrap items-end gap-3">
             <div className="flex flex-col gap-1">
-              <label htmlFor="filter-region" className="text-xs font-medium text-muted-foreground">
+              <label
+                htmlFor="filter-region"
+                className="text-xs font-medium text-muted-foreground"
+              >
                 Region
               </label>
               <select
@@ -194,7 +206,10 @@ export function SurveyModule({
               </select>
             </div>
             <div className="flex flex-col gap-1">
-              <label htmlFor="filter-from" className="text-xs font-medium text-muted-foreground">
+              <label
+                htmlFor="filter-from"
+                className="text-xs font-medium text-muted-foreground"
+              >
                 From
               </label>
               <input
@@ -207,7 +222,10 @@ export function SurveyModule({
               />
             </div>
             <div className="flex flex-col gap-1">
-              <label htmlFor="filter-to" className="text-xs font-medium text-muted-foreground">
+              <label
+                htmlFor="filter-to"
+                className="text-xs font-medium text-muted-foreground"
+              >
                 To
               </label>
               <input
@@ -235,11 +253,21 @@ export function SurveyModule({
           </div>
 
           <div className="flex flex-wrap items-end gap-2">
-            <Button variant="outline" size="sm" onClick={exportResponses} disabled={filtered.length === 0}>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={exportResponses}
+              disabled={filtered.length === 0}
+            >
               <Download className="size-4" aria-hidden />
               Responses CSV
             </Button>
-            <Button variant="outline" size="sm" onClick={exportSummary} disabled={filtered.length === 0}>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={exportSummary}
+              disabled={filtered.length === 0}
+            >
               <Download className="size-4" aria-hidden />
               Summary CSV
             </Button>
@@ -256,19 +284,39 @@ export function SurveyModule({
             <caption className="sr-only">Field survey responses</caption>
             <thead>
               <tr className="border-b text-left text-xs uppercase tracking-wide text-muted-foreground">
-                <th scope="col" className="py-2 pr-3 font-medium">Region</th>
-                <th scope="col" className="py-2 pr-3 text-center font-medium">Awareness</th>
-                <th scope="col" className="py-2 pr-3 text-center font-medium">Heat plan</th>
-                <th scope="col" className="py-2 pr-3 text-center font-medium">Shade</th>
-                <th scope="col" className="py-2 pr-3 text-center font-medium">Water</th>
-                <th scope="col" className="hidden py-2 pr-3 font-medium md:table-cell">Notes</th>
-                <th scope="col" className="py-2 pr-0 text-right font-medium">Submitted</th>
+                <th scope="col" className="py-2 pr-3 font-medium">
+                  Region
+                </th>
+                <th scope="col" className="py-2 pr-3 text-center font-medium">
+                  Awareness
+                </th>
+                <th scope="col" className="py-2 pr-3 text-center font-medium">
+                  Heat plan
+                </th>
+                <th scope="col" className="py-2 pr-3 text-center font-medium">
+                  Shade
+                </th>
+                <th scope="col" className="py-2 pr-3 text-center font-medium">
+                  Water
+                </th>
+                <th
+                  scope="col"
+                  className="hidden py-2 pr-3 font-medium md:table-cell"
+                >
+                  Notes
+                </th>
+                <th scope="col" className="py-2 pr-0 text-right font-medium">
+                  Submitted
+                </th>
               </tr>
             </thead>
             <tbody>
               {filtered.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="py-8 text-center text-muted-foreground">
+                  <td
+                    colSpan={7}
+                    className="py-8 text-center text-muted-foreground"
+                  >
                     No responses match the current filters.
                   </td>
                 </tr>
@@ -276,21 +324,37 @@ export function SurveyModule({
                 filtered.map((row) => (
                   <tr
                     key={row.id}
-                    className={row.pending ? "border-b border-border/60 opacity-60" : "border-b border-border/60"}
+                    className={
+                      row.pending
+                        ? "border-b border-border/60 opacity-60"
+                        : "border-b border-border/60"
+                    }
                   >
                     <td className="py-2 pr-3">
                       <span className="font-medium">{row.regionName}</span>
-                      <span className="block text-xs text-muted-foreground">{row.regionState}</span>
+                      <span className="block text-xs text-muted-foreground">
+                        {row.regionState}
+                      </span>
                     </td>
-                    <td className="py-2 pr-3 text-center tabular-nums">{row.awarenessLevel}</td>
-                    <td className="py-2 pr-3 text-center">{yesNo(row.hasHeatPlan)}</td>
-                    <td className="py-2 pr-3 text-center">{yesNo(row.accessToShade)}</td>
-                    <td className="py-2 pr-3 text-center">{yesNo(row.accessToDrinkingWater)}</td>
+                    <td className="py-2 pr-3 text-center tabular-nums">
+                      {row.awarenessLevel}
+                    </td>
+                    <td className="py-2 pr-3 text-center">
+                      {yesNo(row.hasHeatPlan)}
+                    </td>
+                    <td className="py-2 pr-3 text-center">
+                      {yesNo(row.accessToShade)}
+                    </td>
+                    <td className="py-2 pr-3 text-center">
+                      {yesNo(row.accessToDrinkingWater)}
+                    </td>
                     <td className="hidden max-w-xs py-2 pr-3 text-muted-foreground md:table-cell">
                       <span className="line-clamp-2">{row.notes ?? "—"}</span>
                     </td>
                     <td className="py-2 pr-0 text-right text-xs text-muted-foreground">
-                      {row.pending ? "Saving…" : formatDateTimeUTC(row.submittedAt)}
+                      {row.pending
+                        ? "Saving…"
+                        : formatDateTimeUTC(row.submittedAt)}
                     </td>
                   </tr>
                 ))

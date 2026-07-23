@@ -27,8 +27,15 @@ import { ChartTooltip } from "../chart-tooltip";
 export function TemperatureTrendChart({ data }: { data: TrendPoint[] }) {
   return (
     <ResponsiveContainer width="100%" height={260}>
-      <ComposedChart data={data} margin={{ top: 8, right: 8, bottom: 0, left: -12 }}>
-        <CartesianGrid vertical={false} stroke={AXIS_GRID} strokeDasharray="3 3" />
+      <ComposedChart
+        data={data}
+        margin={{ top: 8, right: 8, bottom: 0, left: -12 }}
+      >
+        <CartesianGrid
+          vertical={false}
+          stroke={AXIS_GRID}
+          strokeDasharray="3 3"
+        />
         <XAxis
           dataKey="date"
           tickFormatter={formatDayMonth}

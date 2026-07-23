@@ -6,7 +6,11 @@ import type {
 
 import type { RegionOverview } from "@/server/regions";
 
-import { HEAT_COLORS, HEATMAP_GRADIENT, VULNERABILITY_GRADIENT } from "./heat-colors";
+import {
+  HEAT_COLORS,
+  HEATMAP_GRADIENT,
+  VULNERABILITY_GRADIENT,
+} from "./heat-colors";
 import { toRegionFeatureCollection } from "./map-data";
 
 export type MarkerColorMode = "level" | "vulnerability";
@@ -51,7 +55,10 @@ const heatmapColor: ExpressionSpecification = [
   "interpolate",
   ["linear"],
   ["heatmap-density"],
-  ...HEATMAP_GRADIENT.flatMap(([stop, color]): [number, string] => [stop, color]),
+  ...HEATMAP_GRADIENT.flatMap(([stop, color]): [number, string] => [
+    stop,
+    color,
+  ]),
 ] as unknown as ExpressionSpecification;
 
 const circleRadius: ExpressionSpecification = [
@@ -85,7 +92,10 @@ const vulnerabilityColor: ExpressionSpecification = [
   "interpolate",
   ["linear"],
   ["get", "vulnerabilityScore"],
-  ...VULNERABILITY_GRADIENT.flatMap(([stop, color]): [number, string] => [stop, color]),
+  ...VULNERABILITY_GRADIENT.flatMap(([stop, color]): [number, string] => [
+    stop,
+    color,
+  ]),
 ] as unknown as ExpressionSpecification;
 
 const labelField: ExpressionSpecification = ["get", "name"];
@@ -156,7 +166,10 @@ export function updateRegionData(
 }
 
 /** Recolour the markers by alert level or by vulnerability score (choropleth). */
-export function setMarkerColorMode(map: MapLibreMap, mode: MarkerColorMode): void {
+export function setMarkerColorMode(
+  map: MapLibreMap,
+  mode: MarkerColorMode,
+): void {
   if (!map.getLayer(MARKERS_LAYER)) return;
   map.setPaintProperty(
     MARKERS_LAYER,

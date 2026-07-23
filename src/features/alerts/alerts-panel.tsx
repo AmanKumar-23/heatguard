@@ -7,7 +7,11 @@ import { AlertBadge } from "@/components/alert-badge";
 import { DataEmptyState } from "@/components/data-empty-state";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { acknowledgeAlert, ApiClientError, createAlert } from "@/lib/api-client";
+import {
+  acknowledgeAlert,
+  ApiClientError,
+  createAlert,
+} from "@/lib/api-client";
 import { classifyAlertLevel } from "@/lib/heat/alert-level";
 import type { AlertWithRegionDTO } from "@/server/alerts";
 
@@ -54,7 +58,9 @@ export function AlertsPanel({
     setPendingIds((set) => new Set(set).add(id));
     // Optimistic: mark inactive immediately.
     setAlerts((current) =>
-      current.map((alert) => (alert.id === id ? { ...alert, active: false } : alert)),
+      current.map((alert) =>
+        alert.id === id ? { ...alert, active: false } : alert,
+      ),
     );
     try {
       await acknowledgeAlert(id);
@@ -78,7 +84,10 @@ export function AlertsPanel({
       try {
         const created = await createAlert({ regionId, heatIndexC: heatIndex });
         setAlerts((current) => [created, ...current]);
-        showToast(`${created.level} alert · ${created.region.name}`, created.message);
+        showToast(
+          `${created.level} alert · ${created.region.name}`,
+          created.message,
+        );
       } catch (error) {
         showToast(
           "Simulation failed",
@@ -101,10 +110,15 @@ export function AlertsPanel({
           className="fixed bottom-4 right-4 z-50 w-80 max-w-[calc(100vw-2rem)] rounded-xl border border-border bg-popover p-4 text-popover-foreground shadow-lg"
         >
           <div className="flex items-start gap-2">
-            <Bell className="mt-0.5 size-4 shrink-0 text-muted-foreground" aria-hidden />
+            <Bell
+              className="mt-0.5 size-4 shrink-0 text-muted-foreground"
+              aria-hidden
+            />
             <div className="min-w-0">
               <p className="text-sm font-semibold">{toast.title}</p>
-              <p className="mt-0.5 text-xs text-muted-foreground">{toast.body}</p>
+              <p className="mt-0.5 text-xs text-muted-foreground">
+                {toast.body}
+              </p>
               <p className="mt-1 text-[10px] uppercase tracking-wide text-muted-foreground">
                 Simulated notification — no real SMS/push sent
               </p>
@@ -125,12 +139,17 @@ export function AlertsPanel({
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <h2 className="font-semibold">Alert feed</h2>
-            <p className="text-xs text-muted-foreground">Active alerts first, then recent.</p>
+            <p className="text-xs text-muted-foreground">
+              Active alerts first, then recent.
+            </p>
           </div>
 
           <div className="flex flex-wrap items-end gap-2">
             <div className="flex flex-col gap-1">
-              <label htmlFor="sim-region" className="text-xs text-muted-foreground">
+              <label
+                htmlFor="sim-region"
+                className="text-xs text-muted-foreground"
+              >
                 Region
               </label>
               <select
@@ -147,7 +166,10 @@ export function AlertsPanel({
               </select>
             </div>
             <div className="flex flex-col gap-1">
-              <label htmlFor="sim-heat" className="text-xs text-muted-foreground">
+              <label
+                htmlFor="sim-heat"
+                className="text-xs text-muted-foreground"
+              >
                 Heat index °C
               </label>
               <input
@@ -166,7 +188,11 @@ export function AlertsPanel({
             </div>
             <div className="flex items-center gap-2">
               <AlertBadge level={previewLevel} />
-              <Button size="sm" disabled={isSimulating || !regionId} onClick={simulate}>
+              <Button
+                size="sm"
+                disabled={isSimulating || !regionId}
+                onClick={simulate}
+              >
                 <Send className="size-4" aria-hidden />
                 {isSimulating ? "Simulating…" : "Simulate alert"}
               </Button>

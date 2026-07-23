@@ -28,7 +28,8 @@ const decoder = new TextDecoder();
 /** Base64url-encode raw bytes (isomorphic: browser `btoa` or Node `Buffer`). */
 function bytesToBase64Url(bytes: Uint8Array): string {
   let binary = "";
-  for (let i = 0; i < bytes.length; i += 1) binary += String.fromCharCode(bytes[i]);
+  for (let i = 0; i < bytes.length; i += 1)
+    binary += String.fromCharCode(bytes[i]);
   const base64 =
     typeof btoa === "function"
       ? btoa(binary)

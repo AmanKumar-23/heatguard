@@ -61,7 +61,20 @@ export interface AnalyticsData {
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 const WEEK_MS = 7 * DAY_MS;
-const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const MONTHS = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
 
 const round1 = (value: number): number => Math.round(value * 10) / 10;
 
@@ -72,7 +85,9 @@ function parseDate(value: string | undefined): Date | undefined {
 }
 
 function clampDate(date: Date, min: Date, max: Date): Date {
-  return new Date(Math.min(Math.max(date.getTime(), min.getTime()), max.getTime()));
+  return new Date(
+    Math.min(Math.max(date.getTime(), min.getTime()), max.getTime()),
+  );
 }
 
 function shortLabel(date: Date): string {
@@ -87,25 +102,43 @@ interface ReadingRow {
 }
 
 /** Group readings into 7-day buckets and count days at each alert level. */
-function buildAlertDistribution(readings: ReadingRow[], from: Date): AlertBucket[] {
+function buildAlertDistribution(
+  readings: ReadingRow[],
+  from: Date,
+): AlertBucket[] {
   const byBucket = new Map<number, AlertBucket>();
   for (const reading of readings) {
-    const index = Math.floor((reading.timestamp.getTime() - from.getTime()) / WEEK_MS);
+    const index = Math.floor(
+      (reading.timestamp.getTime() - from.getTime()) / WEEK_MS,
+    );
     let bucket = byBucket.get(index);
     if (!bucket) {
       const start = new Date(from.getTime() + index * WEEK_MS);
-      bucket = { bucket: shortLabel(start), NORMAL: 0, YELLOW: 0, ORANGE: 0, RED: 0 };
+      bucket = {
+        bucket: shortLabel(start),
+        NORMAL: 0,
+        YELLOW: 0,
+        ORANGE: 0,
+        RED: 0,
+      };
       byBucket.set(index, bucket);
     }
     bucket[classifyAlertLevel(reading.heatIndexC)] += 1;
   }
-  return [...byBucket.entries()].sort((a, b) => a[0] - b[0]).map(([, bucket]) => bucket);
+  return [...byBucket.entries()]
+    .sort((a, b) => a[0] - b[0])
+    .map(([, bucket]) => bucket);
 }
 
 /** Compute summary stats in a single pass over the readings. */
 function buildSummary(readings: ReadingRow[]): AnalyticsSummary {
   if (readings.length === 0) {
-    return { avgHeatIndex: null, daysOverElevated: 0, totalDays: 0, worstDay: null };
+    return {
+      avgHeatIndex: null,
+      daysOverElevated: 0,
+      totalDays: 0,
+      worstDay: null,
+    };
   }
   let sum = 0;
   let daysOverElevated = 0;
@@ -120,7 +153,10 @@ function buildSummary(readings: ReadingRow[]): AnalyticsSummary {
     avgHeatIndex: round1(sum / readings.length),
     daysOverElevated,
     totalDays: readings.length,
-    worstDay: { date: worst.timestamp.toISOString(), heatIndexC: worst.heatIndexC },
+    worstDay: {
+      date: worst.timestamp.toISOString(),
+      heatIndexC: worst.heatIndexC,
+    },
   };
 }
 
@@ -162,7 +198,9 @@ export const getAnalytics = cache(
       where: { timestamp },
       _max: { heatIndexC: true },
     });
-    const peakByRegion = new Map(grouped.map((g) => [g.regionId, g._max.heatIndexC ?? 0]));
+    const peakByRegion = new Map(
+      grouped.map((g) => [g.regionId, g._max.heatIndexC ?? 0]),
+    );
     const crossRegion: CrossRegionPoint[] = regions
       .map((r) => ({
         id: r.id,

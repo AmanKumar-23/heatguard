@@ -20,7 +20,9 @@ export function toRegionFeatureCollection(
   return {
     type: "FeatureCollection",
     features: regions
-      .filter((r) => Number.isFinite(r.longitude) && Number.isFinite(r.latitude))
+      .filter(
+        (r) => Number.isFinite(r.longitude) && Number.isFinite(r.latitude),
+      )
       .map((r) => ({
         type: "Feature",
         geometry: { type: "Point", coordinates: [r.longitude, r.latitude] },

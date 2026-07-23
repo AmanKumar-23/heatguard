@@ -23,12 +23,12 @@ engineering standards — the source of truth for this project.
 
 HeatGuard is organised around four pillars, each mapping 1:1 to a core module.
 
-| Pillar | Module | Route | What it does |
-| --- | --- | --- | --- |
-| **Response** | Real-time monitoring & alerts | `/dashboard`, `/map`, `/alerts` | Live monitoring, GIS hotspot map, and IMD-style early-warning alerts (Normal / Yellow / Orange / Red). |
-| **Recovery** | Recovery indicators tracking | `/recovery` | Hospital admissions, workdays lost, crop losses, electricity failures, water scarcity — tracked per district over time. |
-| **Future Challenges** | Trend analysis & scenarios | `/analytics` | Historical trends and cross-region comparison for urban heat islands and water stress. |
-| **Role of Technology** | GIS & AI intelligence | `/map`, `/vulnerability`, `/reports` | GIS overlays, composite vulnerability index, AI heat & health-risk prediction, and auto-generated reports. |
+| Pillar                 | Module                        | Route                                | What it does                                                                                                            |
+| ---------------------- | ----------------------------- | ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------- |
+| **Response**           | Real-time monitoring & alerts | `/dashboard`, `/map`, `/alerts`      | Live monitoring, GIS hotspot map, and IMD-style early-warning alerts (Normal / Yellow / Orange / Red).                  |
+| **Recovery**           | Recovery indicators tracking  | `/recovery`                          | Hospital admissions, workdays lost, crop losses, electricity failures, water scarcity — tracked per district over time. |
+| **Future Challenges**  | Trend analysis & scenarios    | `/analytics`                         | Historical trends and cross-region comparison for urban heat islands and water stress.                                  |
+| **Role of Technology** | GIS & AI intelligence         | `/map`, `/vulnerability`, `/reports` | GIS overlays, composite vulnerability index, AI heat & health-risk prediction, and auto-generated reports.              |
 
 Supporting modules: **Vulnerability** (`/vulnerability`), **Field Survey**
 (`/survey`), and **Reports** (`/reports`, with server-side PDF export).
@@ -141,31 +141,31 @@ The app auto-detects the service at `ML_SERVICE_URL` (default
 
 ## Environment variables
 
-| Variable | Used by | Default | Purpose |
-| --- | --- | --- | --- |
-| `DATABASE_URL` | web | `file:./dev.db` | Prisma SQLite datasource. Relative `file:` paths resolve under `prisma/`. |
-| `ML_SERVICE_URL` | web | `http://localhost:8000` | Base URL of the prediction service. Unset/offline → forecasts degrade gracefully. |
-| `NEXT_PUBLIC_SITE_URL` | web | `http://localhost:3000` | Canonical site URL (used for metadata / absolute URLs). |
-| `PUPPETEER_EXECUTABLE_PATH` / `CHROME_PATH` | web | _(auto-detected)_ | Chrome/Chromium path for server-side PDF export. If none is found, the report offers a browser print fallback. |
-| `HEATGUARD_DB` | ml-service | `../prisma/dev.db` | Path to the app's SQLite database to train from. |
+| Variable                                    | Used by    | Default                 | Purpose                                                                                                        |
+| ------------------------------------------- | ---------- | ----------------------- | -------------------------------------------------------------------------------------------------------------- |
+| `DATABASE_URL`                              | web        | `file:./dev.db`         | Prisma SQLite datasource. Relative `file:` paths resolve under `prisma/`.                                      |
+| `ML_SERVICE_URL`                            | web        | `http://localhost:8000` | Base URL of the prediction service. Unset/offline → forecasts degrade gracefully.                              |
+| `NEXT_PUBLIC_SITE_URL`                      | web        | `http://localhost:3000` | Canonical site URL (used for metadata / absolute URLs).                                                        |
+| `PUPPETEER_EXECUTABLE_PATH` / `CHROME_PATH` | web        | _(auto-detected)_       | Chrome/Chromium path for server-side PDF export. If none is found, the report offers a browser print fallback. |
+| `HEATGUARD_DB`                              | ml-service | `../prisma/dev.db`      | Path to the app's SQLite database to train from.                                                               |
 
 ---
 
 ## Scripts
 
-| Script | Description |
-| --- | --- |
-| `npm run dev` | Start the Next.js dev server. |
-| `npm run build` | Create a production build. |
-| `npm run start` | Serve the production build. |
-| `npm run lint` | Lint with ESLint (Next.js + Prettier rules). |
-| `npm run format` | Format the codebase with Prettier. |
-| `npm run test` | Run unit + API integration tests (Vitest). |
-| `npm run test:e2e` | Run the Playwright smoke + accessibility test. |
-| `npm run db:generate` | Generate the Prisma client. |
-| `npm run db:migrate` | Create/apply a development migration. |
-| `npm run db:seed` | Seed the development database. |
-| `npm run db:studio` | Open Prisma Studio. |
+| Script                | Description                                    |
+| --------------------- | ---------------------------------------------- |
+| `npm run dev`         | Start the Next.js dev server.                  |
+| `npm run build`       | Create a production build.                     |
+| `npm run start`       | Serve the production build.                    |
+| `npm run lint`        | Lint with ESLint (Next.js + Prettier rules).   |
+| `npm run format`      | Format the codebase with Prettier.             |
+| `npm run test`        | Run unit + API integration tests (Vitest).     |
+| `npm run test:e2e`    | Run the Playwright smoke + accessibility test. |
+| `npm run db:generate` | Generate the Prisma client.                    |
+| `npm run db:migrate`  | Create/apply a development migration.          |
+| `npm run db:seed`     | Seed the development database.                 |
+| `npm run db:studio`   | Open Prisma Studio.                            |
 
 ---
 

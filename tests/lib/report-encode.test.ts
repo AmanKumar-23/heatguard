@@ -5,10 +5,14 @@ import type { ReportOptions } from "@/lib/report/types";
 
 const sample: ReportOptions = {
   recommendations: [
-    { id: "a", title: "Greenery", detail: "Plant trees, expand shade — cover 30%." },
+    {
+      id: "a",
+      title: "Greenery",
+      detail: "Plant trees, expand shade — cover 30%.",
+    },
     { id: "b", title: "Water", detail: "Public drinking-water points." },
   ],
-  execSummary: "Custom summary with a comma, quotes \"x\", and unicode °C.",
+  execSummary: 'Custom summary with a comma, quotes "x", and unicode °C.',
 };
 
 describe("encode/decode report options", () => {

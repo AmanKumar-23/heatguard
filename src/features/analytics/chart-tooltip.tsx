@@ -38,7 +38,10 @@ export function ChartTooltip({
       {heading ? <p className="mb-1 font-medium">{heading}</p> : null}
       <ul className="flex flex-col gap-0.5">
         {payload.map((entry, index) => (
-          <li key={`${entry.name}-${index}`} className="flex items-center gap-2">
+          <li
+            key={`${entry.name}-${index}`}
+            className="flex items-center gap-2"
+          >
             <span
               className="size-2 shrink-0 rounded-full"
               style={{ backgroundColor: entry.color }}

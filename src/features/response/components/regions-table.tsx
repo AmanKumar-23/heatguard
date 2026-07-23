@@ -61,23 +61,38 @@ export function RegionsTable({ regions }: { regions: RegionOverview[] }) {
     <div className="overflow-x-auto rounded-xl border border-border">
       <table className="w-full min-w-[640px] border-collapse text-sm">
         <caption className="sr-only">
-          Monitored regions with current max temperature, heat index, alert level
-          and last update. Sortable by heat index and by state.
+          Monitored regions with current max temperature, heat index, alert
+          level and last update. Sortable by heat index and by state.
         </caption>
         <thead>
           <tr className="border-b border-border bg-muted/40 text-left text-muted-foreground">
             <th scope="col" className="px-4 py-3 font-medium">
               Region
             </th>
-            <th scope="col" aria-sort={ariaSort("state")} className="px-4 py-3 font-medium">
-              <button type="button" onClick={() => toggleSort("state")} className={sortButton}>
+            <th
+              scope="col"
+              aria-sort={ariaSort("state")}
+              className="px-4 py-3 font-medium"
+            >
+              <button
+                type="button"
+                onClick={() => toggleSort("state")}
+                className={sortButton}
+              >
                 State {sortIcon("state")}
               </button>
             </th>
-            <th scope="col" className="hidden px-4 py-3 text-right font-medium sm:table-cell">
+            <th
+              scope="col"
+              className="hidden px-4 py-3 text-right font-medium sm:table-cell"
+            >
               Max temp
             </th>
-            <th scope="col" aria-sort={ariaSort("heatIndex")} className="px-4 py-3 text-right font-medium">
+            <th
+              scope="col"
+              aria-sort={ariaSort("heatIndex")}
+              className="px-4 py-3 text-right font-medium"
+            >
               <button
                 type="button"
                 onClick={() => toggleSort("heatIndex")}
@@ -89,7 +104,10 @@ export function RegionsTable({ regions }: { regions: RegionOverview[] }) {
             <th scope="col" className="px-4 py-3 font-medium">
               Alert
             </th>
-            <th scope="col" className="hidden px-4 py-3 font-medium md:table-cell">
+            <th
+              scope="col"
+              className="hidden px-4 py-3 font-medium md:table-cell"
+            >
               Last updated
             </th>
           </tr>
@@ -111,7 +129,9 @@ export function RegionsTable({ regions }: { regions: RegionOverview[] }) {
                   {region.districtType}
                 </span>
               </td>
-              <td className="px-4 py-3 text-muted-foreground">{region.state}</td>
+              <td className="px-4 py-3 text-muted-foreground">
+                {region.state}
+              </td>
               <td className="hidden px-4 py-3 text-right tabular-nums sm:table-cell">
                 {region.latestReading
                   ? `${region.latestReading.maxTempC.toFixed(1)}°C`

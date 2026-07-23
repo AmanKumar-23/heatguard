@@ -30,5 +30,11 @@ export default async function ReportPrintPage({
   };
   const model = await buildReportModel();
 
-  return <ReportDocument model={model} options={options} chapters={REPORT_CHAPTERS} />;
+  return (
+    <ReportDocument
+      model={model}
+      options={options}
+      chapters={REPORT_CHAPTERS}
+    />
+  );
 }

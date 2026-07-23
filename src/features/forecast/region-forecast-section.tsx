@@ -15,7 +15,11 @@ const RISK_TEXT: Record<HealthRiskCategory, string> = {
 };
 
 /** Async server component: 7-day forecast for a region (degrades if offline). */
-export async function RegionForecastSection({ regionId }: { regionId: string }) {
+export async function RegionForecastSection({
+  regionId,
+}: {
+  regionId: string;
+}) {
   const forecast = await getRegionForecast(regionId, 7);
 
   return (
@@ -58,7 +62,12 @@ export async function RegionForecastSection({ regionId }: { regionId: string }) 
                     max {day.predictedMaxTempC}°C
                   </p>
                   <AlertBadge level={toHeatAlertLevel(day.predictedLevel)} />
-                  <p className={cn("text-xs font-medium", RISK_TEXT[day.healthRisk])}>
+                  <p
+                    className={cn(
+                      "text-xs font-medium",
+                      RISK_TEXT[day.healthRisk],
+                    )}
+                  >
                     {day.healthRisk} risk
                   </p>
                 </div>
@@ -66,8 +75,8 @@ export async function RegionForecastSection({ regionId }: { regionId: string }) 
             </div>
           </div>
           <p className="mt-3 text-xs text-muted-foreground">
-            Predicted heat index per day. AI model estimate — not an authoritative
-            forecast.
+            Predicted heat index per day. AI model estimate — not an
+            authoritative forecast.
           </p>
         </>
       )}

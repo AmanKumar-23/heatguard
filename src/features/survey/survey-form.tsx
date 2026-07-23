@@ -73,7 +73,8 @@ export function SurveyForm({
       const fieldErrors: Record<string, string> = {};
       for (const issue of parsed.error.issues) {
         const key = String(issue.path[0] ?? "form");
-        if (!fieldErrors[key]) fieldErrors[key] = FRIENDLY_ERRORS[key] ?? issue.message;
+        if (!fieldErrors[key])
+          fieldErrors[key] = FRIENDLY_ERRORS[key] ?? issue.message;
       }
       setErrors(fieldErrors);
       return;
@@ -91,7 +92,10 @@ export function SurveyForm({
       setConfirmed(true);
     } catch (error) {
       setErrors({
-        form: error instanceof Error ? error.message : "Submission failed. Please try again.",
+        form:
+          error instanceof Error
+            ? error.message
+            : "Submission failed. Please try again.",
       });
     } finally {
       setSubmitting(false);
@@ -105,7 +109,11 @@ export function SurveyForm({
         Field data-collection form.
       </p>
 
-      <form onSubmit={handleSubmit} className="mt-4 flex flex-col gap-4" noValidate>
+      <form
+        onSubmit={handleSubmit}
+        className="mt-4 flex flex-col gap-4"
+        noValidate
+      >
         {/* Region */}
         <div className="flex flex-col gap-1">
           <label htmlFor="survey-region" className="text-sm font-medium">
@@ -116,7 +124,9 @@ export function SurveyForm({
             value={regionId}
             onChange={(e) => setRegionId(e.target.value)}
             aria-invalid={Boolean(errors.regionId)}
-            aria-describedby={errors.regionId ? "survey-region-error" : undefined}
+            aria-describedby={
+              errors.regionId ? "survey-region-error" : undefined
+            }
             className={fieldClass}
           >
             <option value="">Select a region…</option>
@@ -131,7 +141,11 @@ export function SurveyForm({
             ))}
           </select>
           {errors.regionId ? (
-            <p id="survey-region-error" role="alert" className="text-xs text-destructive">
+            <p
+              id="survey-region-error"
+              role="alert"
+              className="text-xs text-destructive"
+            >
               {errors.regionId}
             </p>
           ) : null}
@@ -141,12 +155,16 @@ export function SurveyForm({
         <fieldset>
           <legend className="text-sm font-medium">
             Awareness level{" "}
-            <span className="font-normal text-muted-foreground">(1 = low, 5 = high)</span>
+            <span className="font-normal text-muted-foreground">
+              (1 = low, 5 = high)
+            </span>
           </legend>
           <div
             role="radiogroup"
             aria-label="Awareness level"
-            aria-describedby={errors.awarenessLevel ? "survey-awareness-error" : undefined}
+            aria-describedby={
+              errors.awarenessLevel ? "survey-awareness-error" : undefined
+            }
             className="mt-1.5 flex gap-2"
           >
             {[1, 2, 3, 4, 5].map((level) => (
@@ -172,7 +190,11 @@ export function SurveyForm({
             ))}
           </div>
           {errors.awarenessLevel ? (
-            <p id="survey-awareness-error" role="alert" className="mt-1 text-xs text-destructive">
+            <p
+              id="survey-awareness-error"
+              role="alert"
+              className="mt-1 text-xs text-destructive"
+            >
               {errors.awarenessLevel}
             </p>
           ) : null}
@@ -181,11 +203,29 @@ export function SurveyForm({
         {/* Booleans */}
         <div className="flex flex-col gap-2">
           {[
-            { id: "heatplan", label: "A heat action plan exists", checked: hasHeatPlan, set: setHasHeatPlan },
-            { id: "shade", label: "Access to shade", checked: accessToShade, set: setAccessToShade },
-            { id: "water", label: "Access to drinking water", checked: accessToWater, set: setAccessToWater },
+            {
+              id: "heatplan",
+              label: "A heat action plan exists",
+              checked: hasHeatPlan,
+              set: setHasHeatPlan,
+            },
+            {
+              id: "shade",
+              label: "Access to shade",
+              checked: accessToShade,
+              set: setAccessToShade,
+            },
+            {
+              id: "water",
+              label: "Access to drinking water",
+              checked: accessToWater,
+              set: setAccessToWater,
+            },
           ].map((item) => (
-            <label key={item.id} className="flex cursor-pointer items-center gap-2 text-sm">
+            <label
+              key={item.id}
+              className="flex cursor-pointer items-center gap-2 text-sm"
+            >
               <input
                 type="checkbox"
                 checked={item.checked}
@@ -200,7 +240,10 @@ export function SurveyForm({
         {/* Notes */}
         <div className="flex flex-col gap-1">
           <label htmlFor="survey-notes" className="text-sm font-medium">
-            Notes <span className="font-normal text-muted-foreground">(optional)</span>
+            Notes{" "}
+            <span className="font-normal text-muted-foreground">
+              (optional)
+            </span>
           </label>
           <textarea
             id="survey-notes"
@@ -214,14 +257,21 @@ export function SurveyForm({
             placeholder="Observations from the field…"
           />
           {errors.notes ? (
-            <p id="survey-notes-error" role="alert" className="text-xs text-destructive">
+            <p
+              id="survey-notes-error"
+              role="alert"
+              className="text-xs text-destructive"
+            >
               {errors.notes}
             </p>
           ) : null}
         </div>
 
         {errors.form ? (
-          <p role="alert" className="rounded-md border border-destructive/30 bg-destructive/10 px-3 py-2 text-xs text-destructive">
+          <p
+            role="alert"
+            className="rounded-md border border-destructive/30 bg-destructive/10 px-3 py-2 text-xs text-destructive"
+          >
             {errors.form}
           </p>
         ) : null}
@@ -232,7 +282,10 @@ export function SurveyForm({
             {submitting ? "Submitting…" : "Submit response"}
           </Button>
           {confirmed ? (
-            <span role="status" className="flex items-center gap-1 text-sm text-heat-normal">
+            <span
+              role="status"
+              className="flex items-center gap-1 text-sm text-heat-normal"
+            >
               <Check className="size-4" aria-hidden />
               Response recorded
             </span>

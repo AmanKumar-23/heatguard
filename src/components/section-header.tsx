@@ -22,14 +22,21 @@ export function SectionHeader({
       : "text-lg font-semibold";
 
   return (
-    <div className={cn("flex flex-wrap items-end justify-between gap-3", className)}>
+    <div
+      className={cn(
+        "flex flex-wrap items-end justify-between gap-3",
+        className,
+      )}
+    >
       <div className="min-w-0">
         <Heading className={headingClass}>{title}</Heading>
         {description ? (
           <p className="mt-1 text-sm text-muted-foreground">{description}</p>
         ) : null}
       </div>
-      {actions ? <div className="flex items-center gap-2">{actions}</div> : null}
+      {actions ? (
+        <div className="flex items-center gap-2">{actions}</div>
+      ) : null}
     </div>
   );
 }

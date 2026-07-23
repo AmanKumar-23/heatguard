@@ -7,7 +7,11 @@
  * returns `null` when unavailable.
  */
 
-import { FOCUS_STATES, HEAT_ALERT_LEVELS, type HeatAlertLevel } from "@/lib/enums";
+import {
+  FOCUS_STATES,
+  HEAT_ALERT_LEVELS,
+  type HeatAlertLevel,
+} from "@/lib/enums";
 import type {
   PredictionData,
   RecoveryData,
@@ -22,7 +26,11 @@ import type {
 import { getAlertCenter } from "./alerts";
 import { prisma } from "./db";
 import { getPredictedRiskSummary } from "./ml";
-import { getLatestReadingTimestamp, getRegionsOverview, type RegionOverview } from "./regions";
+import {
+  getLatestReadingTimestamp,
+  getRegionsOverview,
+  type RegionOverview,
+} from "./regions";
 import { getVulnerabilityAssessment } from "./vulnerability";
 
 const round1 = (value: number): number => Math.round(value * 10) / 10;
@@ -37,17 +45,26 @@ async function safe<T>(fn: () => Promise<T>, fallback: T): Promise<T> {
 }
 
 function buildStudyArea(overview: RegionOverview[]): StudyAreaData {
-  const byState = new Map<string, { regionCount: number; population: number }>();
+  const byState = new Map<
+    string,
+    { regionCount: number; population: number }
+  >();
   const byDistrictType = new Map<string, number>();
   let totalPopulation = 0;
 
   for (const region of overview) {
     totalPopulation += region.population;
-    const state = byState.get(region.state) ?? { regionCount: 0, population: 0 };
+    const state = byState.get(region.state) ?? {
+      regionCount: 0,
+      population: 0,
+    };
     state.regionCount += 1;
     state.population += region.population;
     byState.set(region.state, state);
-    byDistrictType.set(region.districtType, (byDistrictType.get(region.districtType) ?? 0) + 1);
+    byDistrictType.set(
+      region.districtType,
+      (byDistrictType.get(region.districtType) ?? 0) + 1,
+    );
   }
 
   const regions: RegionRow[] = overview.map((r) => ({
@@ -91,13 +108,18 @@ function buildResponse(
     withReadings.length === 0
       ? null
       : round1(
-          withReadings.reduce((sum, r) => sum + (r.latestReading?.heatIndexC ?? 0), 0) /
-            withReadings.length,
+          withReadings.reduce(
+            (sum, r) => sum + (r.latestReading?.heatIndexC ?? 0),
+            0,
+          ) / withReadings.length,
         );
 
   const worstHit = withReadings
     .slice()
-    .sort((a, b) => (b.latestReading?.heatIndexC ?? 0) - (a.latestReading?.heatIndexC ?? 0))
+    .sort(
+      (a, b) =>
+        (b.latestReading?.heatIndexC ?? 0) - (a.latestReading?.heatIndexC ?? 0),
+    )
     .slice(0, 6)
     .map((r) => ({
       name: r.name,
@@ -110,8 +132,12 @@ function buildResponse(
 }
 
 /** Aggregate recovery indicators across all districts. */
-async function buildRecovery(overview: RegionOverview[]): Promise<RecoveryData> {
-  const nameByRegion = new Map(overview.map((r) => [r.id, { name: r.name, state: r.state }]));
+async function buildRecovery(
+  overview: RegionOverview[],
+): Promise<RecoveryData> {
+  const nameByRegion = new Map(
+    overview.map((r) => [r.id, { name: r.name, state: r.state }]),
+  );
 
   const empty: RecoveryData = {
     available: false,
@@ -129,7 +155,11 @@ async function buildRecovery(overview: RegionOverview[]): Promise<RecoveryData> 
   return safe(async () => {
     const [totals, byRegion, byDate] = await Promise.all([
       prisma.recoveryIndicator.aggregate({
-        _sum: { hospitalAdmissions: true, workdaysLost: true, electricityFailures: true },
+        _sum: {
+          hospitalAdmissions: true,
+          workdaysLost: true,
+          electricityFailures: true,
+        },
         _avg: { cropLossPct: true, waterScarcityIndex: true },
       }),
       prisma.recoveryIndicator.groupBy({
@@ -181,19 +211,24 @@ async function buildRecovery(overview: RegionOverview[]): Promise<RecoveryData> 
 
 /** Build the complete report model from live data. Resilient to missing sources. */
 export async function buildReportModel(): Promise<ReportModel> {
-  const [overview, alertCenter, vulnAssessment, predicted, dataAsOf] = await Promise.all([
-    safe(() => getRegionsOverview(), [] as RegionOverview[]),
-    safe(() => getAlertCenter(), null),
-    safe(() => getVulnerabilityAssessment(), null),
-    safe(() => getPredictedRiskSummary(7), null),
-    safe(() => getLatestReadingTimestamp(), null),
-  ]);
+  const [overview, alertCenter, vulnAssessment, predicted, dataAsOf] =
+    await Promise.all([
+      safe(() => getRegionsOverview(), [] as RegionOverview[]),
+      safe(() => getAlertCenter(), null),
+      safe(() => getVulnerabilityAssessment(), null),
+      safe(() => getPredictedRiskSummary(7), null),
+      safe(() => getLatestReadingTimestamp(), null),
+    ]);
 
   const activeAlertCount = alertCenter
     ? alertCenter.feed.filter((a) => a.active).length
     : overview.filter((r) => r.activeAlert !== null).length;
 
-  const response = buildResponse(overview, alertCenter?.statusCode ?? null, activeAlertCount);
+  const response = buildResponse(
+    overview,
+    alertCenter?.statusCode ?? null,
+    activeAlertCount,
+  );
   const studyArea = buildStudyArea(overview);
   const recovery = await buildRecovery(overview);
 
@@ -213,7 +248,10 @@ export async function buildReportModel(): Promise<ReportModel> {
           currentLevel: r.currentLevel,
           predictedLevel: r.predictedLevel ?? null,
         })),
-        weights: vulnAssessment.weights.map((w) => ({ label: w.label, weight: w.weight })),
+        weights: vulnAssessment.weights.map((w) => ({
+          label: w.label,
+          weight: w.weight,
+        })),
       }
     : { available: false, top: [], atRisk: [], weights: [] };
 
@@ -237,7 +275,8 @@ export async function buildReportModel(): Promise<ReportModel> {
   return {
     meta: {
       title: "Heat Wave Disaster Management — Final Report",
-      subtitle: "Early-warning, recovery, and resilience analysis for India's heat-exposed districts",
+      subtitle:
+        "Early-warning, recovery, and resilience analysis for India's heat-exposed districts",
       organisation: "HeatGuard",
       generatedAt: new Date().toISOString(),
       focusStates: [...FOCUS_STATES],

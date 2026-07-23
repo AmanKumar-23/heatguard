@@ -30,7 +30,12 @@ export class ApiError extends Error {
   readonly code: string;
   readonly details?: unknown;
 
-  constructor(status: number, code: string, message: string, details?: unknown) {
+  constructor(
+    status: number,
+    code: string,
+    message: string,
+    details?: unknown,
+  ) {
     super(message);
     this.name = "ApiError";
     this.status = status;
@@ -64,7 +69,9 @@ export function apiFailure(
 }
 
 /** Convert Zod issues into a compact, client-friendly list. */
-function formatZodIssues(error: ZodError): Array<{ path: string; message: string }> {
+function formatZodIssues(
+  error: ZodError,
+): Array<{ path: string; message: string }> {
   return error.issues.map((issue) => ({
     path: issue.path.join("."),
     message: issue.message,
@@ -82,7 +89,12 @@ export async function handleRoute(
     return await fn();
   } catch (error) {
     if (error instanceof ZodError) {
-      return apiFailure(400, "VALIDATION_ERROR", "Invalid request.", formatZodIssues(error));
+      return apiFailure(
+        400,
+        "VALIDATION_ERROR",
+        "Invalid request.",
+        formatZodIssues(error),
+      );
     }
     if (error instanceof ApiError) {
       return apiFailure(error.status, error.code, error.message, error.details);

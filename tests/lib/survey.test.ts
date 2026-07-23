@@ -2,7 +2,9 @@ import { describe, expect, it } from "vitest";
 
 import { computeSurveySummary, type SurveyAggregateInput } from "@/lib/survey";
 
-function response(overrides: Partial<SurveyAggregateInput> = {}): SurveyAggregateInput {
+function response(
+  overrides: Partial<SurveyAggregateInput> = {},
+): SurveyAggregateInput {
   return {
     awarenessLevel: 3,
     hasHeatPlan: false,
@@ -29,10 +31,27 @@ describe("computeSurveySummary", () => {
 
   it("computes averages, percentages, and the distribution", () => {
     const responses = [
-      response({ awarenessLevel: 5, hasHeatPlan: true, accessToDrinkingWater: true, accessToShade: true }),
-      response({ awarenessLevel: 3, hasHeatPlan: true, accessToDrinkingWater: false }),
-      response({ awarenessLevel: 1, hasHeatPlan: false, accessToDrinkingWater: true }),
-      response({ awarenessLevel: 3, hasHeatPlan: false, accessToDrinkingWater: true }),
+      response({
+        awarenessLevel: 5,
+        hasHeatPlan: true,
+        accessToDrinkingWater: true,
+        accessToShade: true,
+      }),
+      response({
+        awarenessLevel: 3,
+        hasHeatPlan: true,
+        accessToDrinkingWater: false,
+      }),
+      response({
+        awarenessLevel: 1,
+        hasHeatPlan: false,
+        accessToDrinkingWater: true,
+      }),
+      response({
+        awarenessLevel: 3,
+        hasHeatPlan: false,
+        accessToDrinkingWater: true,
+      }),
     ];
     const summary = computeSurveySummary(responses);
     expect(summary.count).toBe(4);
@@ -40,7 +59,11 @@ describe("computeSurveySummary", () => {
     expect(summary.withHeatPlanPct).toBe(50); // 2/4
     expect(summary.withWaterAccessPct).toBe(75); // 3/4
     expect(summary.withShadePct).toBe(25); // 1/4
-    expect(summary.awarenessDistribution.find((b) => b.level === 3)?.count).toBe(2);
-    expect(summary.awarenessDistribution.find((b) => b.level === 5)?.count).toBe(1);
+    expect(
+      summary.awarenessDistribution.find((b) => b.level === 3)?.count,
+    ).toBe(2);
+    expect(
+      summary.awarenessDistribution.find((b) => b.level === 5)?.count,
+    ).toBe(1);
   });
 });

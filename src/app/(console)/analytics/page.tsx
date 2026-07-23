@@ -93,7 +93,10 @@ export default async function AnalyticsPage({
             description="Regions ranked by peak heat index in range, coloured by state."
             isEmpty={data.crossRegion.length === 0}
           >
-            <CrossRegionChart data={data.crossRegion} selectedId={selectedRegion.id} />
+            <CrossRegionChart
+              data={data.crossRegion}
+              selectedId={selectedRegion.id}
+            />
           </ChartCard>
         </div>
 

@@ -29,7 +29,9 @@ export function KpiCards({ kpis }: { kpis: OverviewKpis }) {
             : "—"
         }
         sublabel={
-          kpis.highestHeatIndex ? kpis.highestHeatIndex.regionName : "no readings"
+          kpis.highestHeatIndex
+            ? kpis.highestHeatIndex.regionName
+            : "no readings"
         }
         icon={Flame}
         tone="danger"

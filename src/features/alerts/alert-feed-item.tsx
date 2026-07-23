@@ -29,14 +29,18 @@ export function AlertFeedItem({
         // Acknowledged alerts are de-emphasised with a neutral border (not a
         // blanket opacity, which would drop text below the AA contrast ratio);
         // the badge still carries the level colour and an "Acknowledged" label.
-        alert.active ? (LEFT_BORDER[alert.level] ?? "border-l-border") : "border-l-border",
+        alert.active
+          ? (LEFT_BORDER[alert.level] ?? "border-l-border")
+          : "border-l-border",
       )}
     >
       <div className="flex min-w-0 flex-1 flex-col gap-1">
         <div className="flex flex-wrap items-center gap-2">
           <AlertBadge level={toHeatAlertLevel(alert.level)} />
           <span className="font-medium">{alert.region.name}</span>
-          <span className="text-xs text-muted-foreground">{alert.region.state}</span>
+          <span className="text-xs text-muted-foreground">
+            {alert.region.state}
+          </span>
           {alert.heatIndexC !== null ? (
             <span className="text-xs tabular-nums text-muted-foreground">
               · {alert.heatIndexC.toFixed(1)}°C
@@ -51,7 +55,9 @@ export function AlertFeedItem({
           )}
         </div>
         <p className="text-sm text-muted-foreground">{alert.message}</p>
-        <p className="text-xs text-muted-foreground">{formatDateTimeUTC(alert.issuedAt)}</p>
+        <p className="text-xs text-muted-foreground">
+          {formatDateTimeUTC(alert.issuedAt)}
+        </p>
       </div>
 
       {alert.active ? (

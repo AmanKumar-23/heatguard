@@ -61,10 +61,33 @@ function region(
 
 describe("computeOverviewKpis", () => {
   const regions: RegionOverview[] = [
-    region({ name: "Hyderabad", currentLevel: "YELLOW", heatIndexC: 38, population: 10_000_000, hasActiveAlert: true }),
-    region({ name: "Churu", currentLevel: "RED", heatIndexC: 55, population: 120_000, hasActiveAlert: true }),
-    region({ name: "Mumbai", currentLevel: "ORANGE", heatIndexC: 46, population: 12_000_000, hasActiveAlert: true }),
-    region({ name: "Vizag", currentLevel: "NORMAL", heatIndexC: 30, population: 2_000_000 }),
+    region({
+      name: "Hyderabad",
+      currentLevel: "YELLOW",
+      heatIndexC: 38,
+      population: 10_000_000,
+      hasActiveAlert: true,
+    }),
+    region({
+      name: "Churu",
+      currentLevel: "RED",
+      heatIndexC: 55,
+      population: 120_000,
+      hasActiveAlert: true,
+    }),
+    region({
+      name: "Mumbai",
+      currentLevel: "ORANGE",
+      heatIndexC: 46,
+      population: 12_000_000,
+      hasActiveAlert: true,
+    }),
+    region({
+      name: "Vizag",
+      currentLevel: "NORMAL",
+      heatIndexC: 30,
+      population: 2_000_000,
+    }),
   ];
 
   it("counts regions and active alerts", () => {

@@ -1,9 +1,8 @@
 # HeatGuard prediction microservice (FastAPI + scikit-learn).
 #
 # Trains one model per region on startup from the shared SQLite database (the
-# web service seeds it). A stale persisted model is intentionally NOT baked in —
-# region IDs are generated per seed, so the service always trains against the
-# current data (see .dockerignore).
+# web service seeds it). No persisted model is baked in, so the service always
+# trains against the current seeded data (see .dockerignore).
 
 FROM python:3.12-slim
 WORKDIR /app

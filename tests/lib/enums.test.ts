@@ -51,6 +51,11 @@ describe("focus constants", () => {
   });
 
   it("defines the district types", () => {
-    expect(DISTRICT_TYPES).toEqual(["Urban", "Rural", "Municipal", "Industrial"]);
+    expect(DISTRICT_TYPES).toEqual([
+      "Urban",
+      "Rural",
+      "Municipal",
+      "Industrial",
+    ]);
   });
 });

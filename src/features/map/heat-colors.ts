@@ -40,8 +40,23 @@ export const LEGEND_ITEMS: Array<{
   range: string;
   color: string;
 }> = [
-  { level: "NORMAL", label: "Normal", range: `< ${YELLOW}°C`, color: HEAT_COLORS.NORMAL },
-  { level: "YELLOW", label: "Yellow", range: `${YELLOW}–${ORANGE}°C`, color: HEAT_COLORS.YELLOW },
-  { level: "ORANGE", label: "Orange", range: `${ORANGE}–${RED}°C`, color: HEAT_COLORS.ORANGE },
+  {
+    level: "NORMAL",
+    label: "Normal",
+    range: `< ${YELLOW}°C`,
+    color: HEAT_COLORS.NORMAL,
+  },
+  {
+    level: "YELLOW",
+    label: "Yellow",
+    range: `${YELLOW}–${ORANGE}°C`,
+    color: HEAT_COLORS.YELLOW,
+  },
+  {
+    level: "ORANGE",
+    label: "Orange",
+    range: `${ORANGE}–${RED}°C`,
+    color: HEAT_COLORS.ORANGE,
+  },
   { level: "RED", label: "Red", range: `≥ ${RED}°C`, color: HEAT_COLORS.RED },
 ];

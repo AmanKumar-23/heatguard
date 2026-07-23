@@ -20,7 +20,12 @@ export class ApiClientError extends Error {
   readonly code: string;
   readonly details?: unknown;
 
-  constructor(status: number, code: string, message: string, details?: unknown) {
+  constructor(
+    status: number,
+    code: string,
+    message: string,
+    details?: unknown,
+  ) {
     super(message);
     this.name = "ApiClientError";
     this.status = status;
@@ -36,7 +41,11 @@ async function getJson<T>(path: string): Promise<T> {
   try {
     body = (await response.json()) as ApiSuccessBody<T> | ApiFailureBody;
   } catch {
-    throw new ApiClientError(response.status, "INVALID_RESPONSE", "The server returned an invalid response.");
+    throw new ApiClientError(
+      response.status,
+      "INVALID_RESPONSE",
+      "The server returned an invalid response.",
+    );
   }
 
   if (!response.ok || body.ok !== true) {
@@ -78,7 +87,11 @@ async function sendJson<T>(
   try {
     body = (await response.json()) as ApiSuccessBody<T> | ApiFailureBody;
   } catch {
-    throw new ApiClientError(response.status, "INVALID_RESPONSE", "The server returned an invalid response.");
+    throw new ApiClientError(
+      response.status,
+      "INVALID_RESPONSE",
+      "The server returned an invalid response.",
+    );
   }
 
   if (!response.ok || body.ok !== true) {
@@ -112,6 +125,8 @@ export function acknowledgeAlert(id: string): Promise<AlertWithRegionDTO> {
 }
 
 /** Submit a field-survey response. */
-export function submitSurvey(input: CreateSurveyInput): Promise<CreatedSurveyDTO> {
+export function submitSurvey(
+  input: CreateSurveyInput,
+): Promise<CreatedSurveyDTO> {
   return sendJson<CreatedSurveyDTO>("/api/surveys", "POST", input);
 }

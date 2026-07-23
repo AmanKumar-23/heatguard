@@ -66,8 +66,7 @@ export function computeHeatIndex(tempC: number, humidityPct: number): number {
 
   // Low-humidity adjustment (hot, very dry air — e.g. arid Rajasthan).
   if (rh < 13 && tempF >= 80 && tempF <= 112) {
-    heatIndexF -=
-      ((13 - rh) / 4) * Math.sqrt((17 - Math.abs(tempF - 95)) / 17);
+    heatIndexF -= ((13 - rh) / 4) * Math.sqrt((17 - Math.abs(tempF - 95)) / 17);
   }
 
   // High-humidity adjustment (warm, very humid air — e.g. coastal Odisha).

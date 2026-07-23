@@ -27,11 +27,16 @@ export async function PredictedRiskWidget() {
           Prediction service offline — the live data below is unaffected.
         </p>
       ) : summary.length === 0 ? (
-        <p className="mt-3 text-sm text-muted-foreground">No predictions available.</p>
+        <p className="mt-3 text-sm text-muted-foreground">
+          No predictions available.
+        </p>
       ) : (
         <ul className="mt-3 flex flex-col divide-y divide-border">
           {summary.slice(0, 5).map((region) => (
-            <li key={region.regionId} className="flex flex-wrap items-center gap-x-3 gap-y-1 py-2">
+            <li
+              key={region.regionId}
+              className="flex flex-wrap items-center gap-x-3 gap-y-1 py-2"
+            >
               <AlertBadge level={toHeatAlertLevel(region.peakLevel)} />
               <Link
                 href={`/regions/${region.regionId}`}
@@ -39,7 +44,9 @@ export async function PredictedRiskWidget() {
               >
                 {region.name}
               </Link>
-              <span className="text-xs text-muted-foreground">{region.state}</span>
+              <span className="text-xs text-muted-foreground">
+                {region.state}
+              </span>
               <span className="ml-auto text-sm tabular-nums">
                 peak {region.peakPredictedHeatIndexC}°C
               </span>

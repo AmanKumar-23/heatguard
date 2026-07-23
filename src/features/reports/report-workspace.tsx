@@ -19,14 +19,25 @@ import { Card } from "@/components/ui/card";
 import { formatDateTimeUTC, formatNumber } from "@/lib/format";
 import { BarChartSVG, LEVEL_COLORS, RegionMapSVG } from "@/lib/report/figures";
 import { encodeReportOptions } from "@/lib/report/encode";
-import type { ReportModel, ReportOptions, ReportRecommendation } from "@/lib/report/types";
+import type {
+  ReportModel,
+  ReportOptions,
+  ReportRecommendation,
+} from "@/lib/report/types";
 
-const LEVEL_LABEL = { NORMAL: "Normal", YELLOW: "Yellow", ORANGE: "Orange", RED: "Red" } as const;
+const LEVEL_LABEL = {
+  NORMAL: "Normal",
+  YELLOW: "Yellow",
+  ORANGE: "Orange",
+  RED: "Red",
+} as const;
 
 /** Paper-styled container so figure previews match the printed (light) report. */
 function Paper({ children }: { children: React.ReactNode }) {
   return (
-    <div className="rounded-md border border-border bg-white p-4 text-neutral-900">{children}</div>
+    <div className="rounded-md border border-border bg-white p-4 text-neutral-900">
+      {children}
+    </div>
   );
 }
 
@@ -37,8 +48,9 @@ export function ReportWorkspace({
   model: ReportModel;
   defaultRecommendations: ReportRecommendation[];
 }) {
-  const [recommendations, setRecommendations] =
-    useState<ReportRecommendation[]>(defaultRecommendations);
+  const [recommendations, setRecommendations] = useState<
+    ReportRecommendation[]
+  >(defaultRecommendations);
   const [execSummary, setExecSummary] = useState("");
   const [generating, setGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -96,7 +108,9 @@ export function ReportWorkspace({
       if (!response.ok) {
         let message = "The report PDF could not be generated.";
         try {
-          const body = (await response.json()) as { error?: { message?: string } };
+          const body = (await response.json()) as {
+            error?: { message?: string };
+          };
           if (body?.error?.message) message = body.error.message;
         } catch {
           // non-JSON error
@@ -154,30 +168,62 @@ export function ReportWorkspace({
           role="alert"
           className="flex items-start gap-2 rounded-md border border-heat-orange/40 bg-heat-orange/10 px-4 py-3 text-sm"
         >
-          <AlertTriangle className="mt-0.5 size-4 shrink-0 text-heat-orange" aria-hidden />
+          <AlertTriangle
+            className="mt-0.5 size-4 shrink-0 text-heat-orange"
+            aria-hidden
+          />
           <p>{error}</p>
         </div>
       ) : null}
 
       {/* Snapshot / preview */}
       <section className="flex flex-col gap-4">
-        <SectionHeader title="Report snapshot" description="What the generated report will contain." />
+        <SectionHeader
+          title="Report snapshot"
+          description="What the generated report will contain."
+        />
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <KPICard label="Districts" value={String(model.studyArea.regionCount)} sublabel={`${model.studyArea.stateCount} states`} icon={FileText} />
-          <KPICard label="Active warnings" value={String(model.response.activeAlertCount)} sublabel={`${elevated} at Orange/Red`} tone={elevated > 0 ? "warning" : "neutral"} />
-          <KPICard label="At-risk districts" value={String(model.vulnerability.atRisk.length)} sublabel="Heat × vulnerability" tone={model.vulnerability.atRisk.length > 0 ? "danger" : "neutral"} />
-          <KPICard label="Status code" value={model.response.statusCode?.code ?? "—"} sublabel={model.response.statusCode?.overall ?? "n/a"} />
+          <KPICard
+            label="Districts"
+            value={String(model.studyArea.regionCount)}
+            sublabel={`${model.studyArea.stateCount} states`}
+            icon={FileText}
+          />
+          <KPICard
+            label="Active warnings"
+            value={String(model.response.activeAlertCount)}
+            sublabel={`${elevated} at Orange/Red`}
+            tone={elevated > 0 ? "warning" : "neutral"}
+          />
+          <KPICard
+            label="At-risk districts"
+            value={String(model.vulnerability.atRisk.length)}
+            sublabel="Heat × vulnerability"
+            tone={model.vulnerability.atRisk.length > 0 ? "danger" : "neutral"}
+          />
+          <KPICard
+            label="Status code"
+            value={model.response.statusCode?.code ?? "—"}
+            sublabel={model.response.statusCode?.overall ?? "n/a"}
+          />
         </div>
 
         <div className="grid gap-4 lg:grid-cols-2">
           <Card className="p-5">
-            <h3 className="mb-3 text-sm font-semibold">Alert-level distribution</h3>
+            <h3 className="mb-3 text-sm font-semibold">
+              Alert-level distribution
+            </h3>
             <Paper>
-              <BarChartSVG data={levelData} ariaLabel="Alert-level distribution preview" />
+              <BarChartSVG
+                data={levelData}
+                ariaLabel="Alert-level distribution preview"
+              />
             </Paper>
           </Card>
           <Card className="p-5">
-            <h3 className="mb-3 text-sm font-semibold">District map snapshot</h3>
+            <h3 className="mb-3 text-sm font-semibold">
+              District map snapshot
+            </h3>
             <Paper>
               <RegionMapSVG
                 regions={model.studyArea.regions}
@@ -191,15 +237,19 @@ export function ReportWorkspace({
 
         <p className="text-xs text-muted-foreground">
           Data as of{" "}
-          {model.meta.dataAsOf ? formatDateTimeUTC(model.meta.dataAsOf) : "—"}. Total population
-          covered: {formatNumber(model.studyArea.totalPopulation)}.
+          {model.meta.dataAsOf ? formatDateTimeUTC(model.meta.dataAsOf) : "—"}.
+          Total population covered:{" "}
+          {formatNumber(model.studyArea.totalPopulation)}.
         </p>
       </section>
 
       {/* Editable executive summary */}
       <Card className="p-5">
         <label htmlFor="exec-summary" className="text-sm font-semibold">
-          Executive summary <span className="font-normal text-muted-foreground">(optional override)</span>
+          Executive summary{" "}
+          <span className="font-normal text-muted-foreground">
+            (optional override)
+          </span>
         </label>
         <p className="mt-0.5 mb-2 text-xs text-muted-foreground">
           Leave blank to auto-generate a summary from live data.
@@ -222,7 +272,11 @@ export function ReportWorkspace({
           description="Pre-filled with the project's sample recommendations. Edit before exporting."
           actions={
             <div className="flex gap-2">
-              <Button variant="ghost" size="sm" onClick={() => setRecommendations(defaultRecommendations)}>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setRecommendations(defaultRecommendations)}
+              >
                 <RotateCcw className="size-4" aria-hidden />
                 Reset
               </Button>
@@ -248,7 +302,9 @@ export function ReportWorkspace({
                     <input
                       id={`rec-title-${rec.id}`}
                       value={rec.title}
-                      onChange={(e) => updateRec(rec.id, "title", e.target.value)}
+                      onChange={(e) =>
+                        updateRec(rec.id, "title", e.target.value)
+                      }
                       placeholder="Recommendation title"
                       className="w-full rounded-md border border-input bg-background px-2 py-1.5 text-sm font-medium outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring"
                     />
@@ -260,7 +316,9 @@ export function ReportWorkspace({
                     <textarea
                       id={`rec-detail-${rec.id}`}
                       value={rec.detail}
-                      onChange={(e) => updateRec(rec.id, "detail", e.target.value)}
+                      onChange={(e) =>
+                        updateRec(rec.id, "detail", e.target.value)
+                      }
                       rows={2}
                       placeholder="Describe the recommended action…"
                       className="w-full rounded-md border border-input bg-background px-2 py-1.5 text-sm outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring"
@@ -280,7 +338,8 @@ export function ReportWorkspace({
           ))}
           {recommendations.length === 0 ? (
             <li className="rounded-md border border-dashed border-border p-4 text-center text-sm text-muted-foreground">
-              No recommendations. Use “Add” to create one or “Reset” to restore the defaults.
+              No recommendations. Use “Add” to create one or “Reset” to restore
+              the defaults.
             </li>
           ) : null}
         </ol>
