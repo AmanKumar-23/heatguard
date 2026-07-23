@@ -26,8 +26,10 @@ export function AlertFeedItem({
     <li
       className={cn(
         "flex flex-col gap-2 border-l-4 py-3 pl-3 sm:flex-row sm:items-center sm:gap-4",
-        LEFT_BORDER[alert.level] ?? "border-l-border",
-        !alert.active && "opacity-70",
+        // Acknowledged alerts are de-emphasised with a neutral border (not a
+        // blanket opacity, which would drop text below the AA contrast ratio);
+        // the badge still carries the level colour and an "Acknowledged" label.
+        alert.active ? (LEFT_BORDER[alert.level] ?? "border-l-border") : "border-l-border",
       )}
     >
       <div className="flex min-w-0 flex-1 flex-col gap-1">

@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+# Do not bake a persisted model: region IDs are per-seed, so the container
+# trains fresh against the shared database on startup.
+models/
+*.joblib

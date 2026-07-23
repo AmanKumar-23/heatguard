@@ -4,6 +4,9 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+  ),
   title: {
     default: "HeatGuard — Heat Wave Early Warning System",
     template: "%s · HeatGuard",

@@ -70,9 +70,11 @@ export function StatusCodePanel({ statusCode }: { statusCode: StatusCodeResult }
             <div className="min-w-0">
               <p className="text-sm font-medium">
                 {index + 1}. {digit.label}{" "}
-                <span className="text-xs font-normal text-muted-foreground">· {digit.state}</span>
+                {/* De-emphasised via dark ink at reduced opacity (not
+                    muted-foreground) so it stays legible on the colour tints. */}
+                <span className="text-xs font-normal text-foreground/80">· {digit.state}</span>
               </p>
-              <p className="text-xs text-muted-foreground">{digit.meaning}</p>
+              <p className="text-xs text-foreground/80">{digit.meaning}</p>
               <p className="mt-0.5 text-xs">{digit.detail}</p>
             </div>
           </li>
