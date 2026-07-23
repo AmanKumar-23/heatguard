@@ -30,15 +30,13 @@ Heat waves are one of India's deadliest and most under-managed natural hazards: 
 
 ## Screenshots
 
-> 📷 Placeholder images — drop real captures into [`docs/screenshots/`](docs/screenshots/) (see the note there).
+A quick tour of the platform:
 
-|                       Overview                       |               Interactive map                |
-| :--------------------------------------------------: | :------------------------------------------: |
-| ![Overview dashboard](docs/screenshots/overview.png) | ![GIS hotspot map](docs/screenshots/map.png) |
-|                    **Analytics**                     |           **Early-warning alerts**           |
-| ![Analytics trends](docs/screenshots/analytics.png)  | ![Alerts feed](docs/screenshots/alerts.png)  |
-|                 **Generated report**                 |                                              |
-|    ![Report export](docs/screenshots/report.png)     |                                              |
+|                                                              Landing                                                              |                                             Overview — live monitoring                                             |
+| :-------------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------: |
+|                                      ![HeatGuard landing page](docs/screenshots/landing.png)                                      | ![Live-monitoring dashboard with KPIs, 7-day predicted risk, and the regions table](docs/screenshots/overview.png) |
+|                                                **Analytics — trends & comparison**                                                |                                         **Field Survey — data collection**                                         |
+| ![Analytics: temperature/heat-index trend, alert levels over time, and peak heat index by region](docs/screenshots/analytics.png) |         ![Field survey: response form, awareness aggregates, and CSV export](docs/screenshots/survey.png)          |
 
 ---
 

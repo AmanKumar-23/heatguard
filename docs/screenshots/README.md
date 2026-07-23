@@ -1,16 +1,19 @@
 # Screenshots
 
-Drop your app screenshots in this folder so they appear in the main
-[`README.md`](../../README.md). The README expects these five files (PNG):
+These images appear in the main [`README.md`](../../README.md) Screenshots grid.
 
-| File            | Capture                                                             |
-| --------------- | ------------------------------------------------------------------- |
-| `overview.png`  | The `/dashboard` Overview page                                      |
-| `map.png`       | The `/map` GIS hotspot map                                          |
-| `analytics.png` | The `/analytics` trends page                                        |
-| `alerts.png`    | The `/alerts` early-warning page                                    |
-| `report.png`    | A generated report (from `/reports`, or a page of the exported PDF) |
+Current captures:
 
-**Tip:** capture at a consistent width (e.g. 1440px) and light mode for a clean
-grid. Until you add them, the README's Screenshots table will show broken-image
-placeholders — that's expected.
+| File            | Page                                        |
+| --------------- | ------------------------------------------- |
+| `landing.png`   | The landing / hero page (`/`)               |
+| `overview.png`  | The `/dashboard` Overview (Live Monitoring) |
+| `analytics.png` | The `/analytics` trends & comparison page   |
+| `survey.png`    | The `/survey` Field Survey page             |
+
+Want to extend the grid? Drop in more PNGs (e.g. `map.png` for `/map`,
+`alerts.png` for `/alerts`, `report.png` for a generated report) and add a row to
+the README table.
+
+**Tip:** for the cleanest look, crop to just the app content (excluding the
+browser chrome) and capture in light mode at a consistent width.
